@@ -16,8 +16,92 @@ public class MaxTGUI extends javax.swing.JFrame {
      */
     public MaxTGUI() {
         initComponents();
+        systemInfoTextArea.setText("System Information: This is only a prototype application. \r\n\r\n" +
+                "Functionality is limited to navigation and examples of system functions, " +
+                "which will be displayed in this area.");
+    }
+    
+    private void addCow() {
+        systemInfoTextArea.setText("System Information: A Cow has been added to the Herd.");
+    }
+    
+    private void addHerd() {
+        jTabbedPane1.setSelectedIndex(2);
+    }
+    
+    private void addFarm() {
+        jTabbedPane1.setSelectedIndex(1);
+    }
+    
+    private void addMilkTaking() {
+        jTabbedPane1.setSelectedIndex(3);
+    }
+    
+    private void saveHerd() {
+        systemInfoTextArea.setText("System Information: A Herd has been added to the Farm.");
     }
 
+    private void saveFarm() {
+        systemInfoTextArea.setText("System Information: A Farm has been added to the system");
+    }
+    
+    private void deleteCow() {
+        systemInfoTextArea.setText("System Information: A Cow has been deleted from the Herd.");
+    }
+    
+    private void deleteHerd() {
+        systemInfoTextArea.setText("System Information: A Herd has been deleted from the Farm.");
+    }
+    
+    private void deleteFarm() {
+        systemInfoTextArea.setText("System Information: A Farm has been deleted from the system.");
+    }
+    
+    private void saveMilkTaking() {
+        systemInfoTextArea.setText("System Information: The milk taking for the cow has been added to the system.");
+    }
+    
+    private void deleteMilkTaking() {
+        systemInfoTextArea.setText("System Information: The milk taking for the cow has been deleted from the system.");
+    }
+    
+    private void resetFarm() {
+        systemInfoTextArea.setText("System Information: Re-enter the Farm details.");
+    }
+    
+    private void resetHerd() {
+        eightHourRadioButton.setSelected(false);
+        nineHourRadioButton.setSelected(false);
+        systemInfoTextArea.setText("System Information: Re-enter the Herd details.");
+    }
+    
+    private void resetMilkTaking() {
+        amMilkYieldSpinner.setValue(0);
+        pmMilkYieldSpinner.setValue(0);
+        systemInfoTextArea.setText("System Information: Re-enter the milk taking values.");
+    }
+    
+    private void selectEightHour() {
+        if (eightHourRadioButton.isSelected()) {
+            systemInfoTextArea.setText("System Information: 8 and 16 hour milking interval selected.");
+            nineHourRadioButton.setSelected(false);
+        } else {
+            systemInfoTextArea.setText("System Information: Unselected 8 & 16 hour milk interval. " +
+                    "9 & 15 hour interval selected instead");
+            nineHourRadioButton.setSelected(true);
+        }
+    }
+    
+    private void selectNineHour() {
+        if (nineHourRadioButton.isSelected()) {
+            systemInfoTextArea.setText("System Information: 9 and 15 hour milking interval selected");
+            eightHourRadioButton.setSelected(false);
+        } else {
+            systemInfoTextArea.setText("System Information: Unselected 9 & 15 hour milking interval. " +
+                    "8 & 16 hour interval selected instead.");
+            eightHourRadioButton.setSelected(true);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,7 +110,6 @@ public class MaxTGUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         mainScreenPanel = new javax.swing.JPanel();
@@ -113,6 +196,11 @@ public class MaxTGUI extends javax.swing.JFrame {
             String[] strings = { "1001", "1002", "1003", "1004", "1005" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
+        });
+        selectCowList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectCowListMouseClicked(evt);
+            }
         });
         selectCowScrollPane.setViewportView(selectCowList);
 
@@ -208,9 +296,19 @@ public class MaxTGUI extends javax.swing.JFrame {
         currentFarmLabel.setText("List of current Farms");
 
         farmSaveButton.setText("Save");
+        farmSaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                farmSaveButtonActionPerformed(evt);
+            }
+        });
 
         farmResetButton.setText("Reset");
         farmResetButton.setPreferredSize(new java.awt.Dimension(85, 60));
+        farmResetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                farmResetButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout addFarmPanelLayout = new javax.swing.GroupLayout(addFarmPanel);
         addFarmPanel.setLayout(addFarmPanelLayout);
@@ -287,9 +385,19 @@ public class MaxTGUI extends javax.swing.JFrame {
 
         eightHourRadioButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         eightHourRadioButton.setText("8 and 16 hour");
+        eightHourRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eightHourRadioButtonActionPerformed(evt);
+            }
+        });
 
         nineHourRadioButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         nineHourRadioButton.setText("9 and 15 hour");
+        nineHourRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nineHourRadioButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout milkingIntervalPanelLayout = new javax.swing.GroupLayout(milkingIntervalPanel);
         milkingIntervalPanel.setLayout(milkingIntervalPanelLayout);
@@ -324,9 +432,19 @@ public class MaxTGUI extends javax.swing.JFrame {
 
         herdSaveButton.setText("Save");
         herdSaveButton.setPreferredSize(new java.awt.Dimension(85, 60));
+        herdSaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                herdSaveButtonActionPerformed(evt);
+            }
+        });
 
         herdResetButton.setText("Reset");
         herdResetButton.setPreferredSize(new java.awt.Dimension(85, 60));
+        herdResetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                herdResetButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout addHerdPanelLayout = new javax.swing.GroupLayout(addHerdPanel);
         addHerdPanel.setLayout(addHerdPanelLayout);
@@ -406,6 +524,7 @@ public class MaxTGUI extends javax.swing.JFrame {
         currentCowLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         currentCowLabel.setText("Current List of Cows");
 
+        cowMilkIntervalField.setEditable(false);
         cowMilkIntervalField.setText("Cow is milked on a {interval}");
 
         milkIntervalPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Milkings", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
@@ -413,8 +532,12 @@ public class MaxTGUI extends javax.swing.JFrame {
         amMilkYieldLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         amMilkYieldLabel.setText("AM Milk Yield");
 
+        amMilkYieldSpinner.setPreferredSize(new java.awt.Dimension(60, 25));
+
         pmMilkYieldLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         pmMilkYieldLabel.setText("PM Milk Yield");
+
+        pmMilkYieldSpinner.setPreferredSize(new java.awt.Dimension(60, 25));
 
         javax.swing.GroupLayout milkIntervalPanelLayout = new javax.swing.GroupLayout(milkIntervalPanel);
         milkIntervalPanel.setLayout(milkIntervalPanelLayout);
@@ -425,11 +548,11 @@ public class MaxTGUI extends javax.swing.JFrame {
                 .addGroup(milkIntervalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(amMilkYieldLabel)
                     .addComponent(pmMilkYieldLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
-                .addGroup(milkIntervalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(amMilkYieldSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pmMilkYieldSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addGroup(milkIntervalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pmMilkYieldSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(amMilkYieldSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 50, Short.MAX_VALUE))
         );
         milkIntervalPanelLayout.setVerticalGroup(
             milkIntervalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -448,12 +571,27 @@ public class MaxTGUI extends javax.swing.JFrame {
         milkTakingSaveButton.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
         milkTakingSaveButton.setText("Add/Update");
         milkTakingSaveButton.setPreferredSize(new java.awt.Dimension(85, 60));
+        milkTakingSaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                milkTakingSaveButtonActionPerformed(evt);
+            }
+        });
 
         milkTakingResetButton.setText("Reset");
         milkTakingResetButton.setPreferredSize(new java.awt.Dimension(85, 60));
+        milkTakingResetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                milkTakingResetButtonActionPerformed(evt);
+            }
+        });
 
         milkTakingDeleteButton.setText("Delete");
         milkTakingDeleteButton.setPreferredSize(new java.awt.Dimension(85, 60));
+        milkTakingDeleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                milkTakingDeleteButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout milkTakingsPanelLayout = new javax.swing.GroupLayout(milkTakingsPanel);
         milkTakingsPanel.setLayout(milkTakingsPanelLayout);
@@ -511,7 +649,7 @@ public class MaxTGUI extends javax.swing.JFrame {
                     .addGroup(milkTakingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(milkTakingResetButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(milkTakingDeleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Milk Takings", milkTakingsPanel);
@@ -525,33 +663,70 @@ public class MaxTGUI extends javax.swing.JFrame {
 
         exitButton.setText("Exit");
         exitButton.setPreferredSize(new java.awt.Dimension(85, 60));
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, systemInfoTextArea, org.jdesktop.beansbinding.ObjectProperty.create(), exitButton, org.jdesktop.beansbinding.BeanProperty.create("alignmentY"));
-        bindingGroup.addBinding(binding);
+        exitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitButtonActionPerformed(evt);
+            }
+        });
 
         milkTakingButton.setText("Cows Milk");
         milkTakingButton.setPreferredSize(new java.awt.Dimension(85, 60));
+        milkTakingButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                milkTakingButtonActionPerformed(evt);
+            }
+        });
 
         addCowButton.setText("Add Cow");
         addCowButton.setPreferredSize(new java.awt.Dimension(85, 60));
+        addCowButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addCowButtonActionPerformed(evt);
+            }
+        });
 
         addHerdButton.setText("Add Herd");
         addHerdButton.setPreferredSize(new java.awt.Dimension(85, 60));
+        addHerdButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addHerdButtonActionPerformed(evt);
+            }
+        });
 
         addFarmButton.setText("Add Farm");
         addFarmButton.setPreferredSize(new java.awt.Dimension(85, 60));
+        addFarmButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addFarmButtonActionPerformed(evt);
+            }
+        });
 
         deleteCowButton.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         deleteCowButton.setText("Delete Cow");
         deleteCowButton.setPreferredSize(new java.awt.Dimension(85, 60));
+        deleteCowButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteCowButtonActionPerformed(evt);
+            }
+        });
 
         deleteHerdButton.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         deleteHerdButton.setText("Delete Herd");
         deleteHerdButton.setPreferredSize(new java.awt.Dimension(85, 60));
+        deleteHerdButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteHerdButtonActionPerformed(evt);
+            }
+        });
 
         deleteFarmButton.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         deleteFarmButton.setText("Delete Farm");
         deleteFarmButton.setPreferredSize(new java.awt.Dimension(85, 60));
+        deleteFarmButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteFarmButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -561,27 +736,26 @@ public class MaxTGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(systemInfoTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(milkTakingButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(addCowButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(addHerdButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(28, 28, 28)
+                                .addComponent(addHerdButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(addFarmButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(deleteCowButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(deleteHerdButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(deleteFarmButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(addFarmButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(deleteCowButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(deleteHerdButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(deleteFarmButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(addCowButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(milkTakingButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(systemInfoTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -611,10 +785,102 @@ public class MaxTGUI extends javax.swing.JFrame {
                 .addContainerGap(46, Short.MAX_VALUE))
         );
 
-        bindingGroup.bind();
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void addCowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCowButtonActionPerformed
+        // TODO add your handling code here:
+        addCow();
+    }//GEN-LAST:event_addCowButtonActionPerformed
+
+    private void milkTakingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_milkTakingButtonActionPerformed
+        // TODO add your handling code here:
+        addMilkTaking();
+    }//GEN-LAST:event_milkTakingButtonActionPerformed
+
+    private void addHerdButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addHerdButtonActionPerformed
+        // TODO add your handling code here:
+        addHerd();
+    }//GEN-LAST:event_addHerdButtonActionPerformed
+
+    private void addFarmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFarmButtonActionPerformed
+        // TODO add your handling code here:
+        addFarm();
+    }//GEN-LAST:event_addFarmButtonActionPerformed
+
+    private void farmSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_farmSaveButtonActionPerformed
+        // TODO add your handling code here:
+        saveFarm();
+    }//GEN-LAST:event_farmSaveButtonActionPerformed
+
+    private void farmResetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_farmResetButtonActionPerformed
+        // TODO add your handling code here:
+        resetFarm();
+    }//GEN-LAST:event_farmResetButtonActionPerformed
+
+    private void deleteFarmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteFarmButtonActionPerformed
+        // TODO add your handling code here:
+        deleteFarm();
+    }//GEN-LAST:event_deleteFarmButtonActionPerformed
+
+    private void herdSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_herdSaveButtonActionPerformed
+        // TODO add your handling code here:
+        saveHerd();
+    }//GEN-LAST:event_herdSaveButtonActionPerformed
+
+    private void herdResetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_herdResetButtonActionPerformed
+        // TODO add your handling code here:
+        resetHerd();
+    }//GEN-LAST:event_herdResetButtonActionPerformed
+
+    private void deleteHerdButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteHerdButtonActionPerformed
+        // TODO add your handling code here:
+        deleteHerd();
+    }//GEN-LAST:event_deleteHerdButtonActionPerformed
+
+    private void milkTakingSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_milkTakingSaveButtonActionPerformed
+        // TODO add your handling code here:
+        saveMilkTaking();
+    }//GEN-LAST:event_milkTakingSaveButtonActionPerformed
+
+    private void milkTakingDeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_milkTakingDeleteButtonActionPerformed
+        // TODO add your handling code here:
+        deleteMilkTaking();
+    }//GEN-LAST:event_milkTakingDeleteButtonActionPerformed
+
+    private void milkTakingResetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_milkTakingResetButtonActionPerformed
+        // TODO add your handling code here:
+        resetMilkTaking();
+    }//GEN-LAST:event_milkTakingResetButtonActionPerformed
+
+    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_exitButtonActionPerformed
+
+    private void deleteCowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteCowButtonActionPerformed
+        // TODO add your handling code here:
+        deleteCow();
+    }//GEN-LAST:event_deleteCowButtonActionPerformed
+
+    private void eightHourRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eightHourRadioButtonActionPerformed
+        // TODO add your handling code here:
+        selectEightHour();
+    }//GEN-LAST:event_eightHourRadioButtonActionPerformed
+
+    private void nineHourRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nineHourRadioButtonActionPerformed
+        // TODO add your handling code here:
+        selectNineHour();
+    }//GEN-LAST:event_nineHourRadioButtonActionPerformed
+
+    private void selectCowListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectCowListMouseClicked
+        // TODO add your handling code here:
+        // waits for a double click
+        if (evt.getClickCount() == 2) {
+            systemInfoTextArea.setText("System Information: Double clicked on the list of cows.");
+            addMilkTaking();
+        }
+    }//GEN-LAST:event_selectCowListMouseClicked
 
     /**
      * @param args the command line arguments
@@ -713,6 +979,5 @@ public class MaxTGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane statisticsScrollPane;
     private javax.swing.JTextArea statisticsTextArea;
     private javax.swing.JTextArea systemInfoTextArea;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

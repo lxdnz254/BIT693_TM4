@@ -31,36 +31,35 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="systemInfoTextArea" min="-2" pref="680" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="exitButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
                       <Component id="jTabbedPane1" min="-2" pref="680" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="milkTakingButton" min="-2" max="-2" attributes="0"/>
-                                  <Component id="addCowButton" min="-2" max="-2" attributes="0"/>
-                                  <Component id="addHerdButton" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                              <Component id="addHerdButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="addFarmButton" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="deleteCowButton" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="deleteHerdButton" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="deleteFarmButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                                      <Component id="addFarmButton" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="deleteCowButton" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="deleteHerdButton" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="deleteFarmButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="addCowButton" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="milkTakingButton" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
                   </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="systemInfoTextArea" min="-2" pref="680" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="exitButton" min="-2" pref="85" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -256,6 +255,9 @@
                       </StringArray>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="selectCowListMouseClicked"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -442,6 +444,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Save"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="farmSaveButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="farmResetButton">
               <Properties>
@@ -450,6 +455,9 @@
                   <Dimension value="[85, 60]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="farmResetButtonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -618,6 +626,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="8 and 16 hour"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="eightHourRadioButtonActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="nineHourRadioButton">
                   <Properties>
@@ -626,6 +637,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="9 and 15 hour"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nineHourRadioButtonActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -665,6 +679,9 @@
                   <Dimension value="[85, 60]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="herdSaveButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="herdResetButton">
               <Properties>
@@ -673,6 +690,9 @@
                   <Dimension value="[85, 60]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="herdResetButtonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -753,7 +773,7 @@
                               <Component id="milkTakingDeleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="52" max="32767" attributes="0"/>
+                      <EmptySpace pref="45" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -820,6 +840,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="cowMilkIntervalField">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="text" type="java.lang.String" value="Cow is milked on a {interval}"/>
               </Properties>
             </Component>
@@ -843,12 +864,12 @@
                               <Component id="amMilkYieldLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="pmMilkYieldLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="114" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="amMilkYieldSpinner" min="-2" max="-2" attributes="0"/>
-                              <Component id="pmMilkYieldSpinner" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="60" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="pmMilkYieldSpinner" max="32767" attributes="0"/>
+                              <Component id="amMilkYieldSpinner" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="50" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -880,6 +901,11 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JSpinner" name="amMilkYieldSpinner">
+                  <Properties>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[60, 25]"/>
+                    </Property>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="pmMilkYieldLabel">
                   <Properties>
@@ -890,6 +916,11 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JSpinner" name="pmMilkYieldSpinner">
+                  <Properties>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[60, 25]"/>
+                    </Property>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
@@ -903,6 +934,9 @@
                   <Dimension value="[85, 60]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="milkTakingSaveButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="milkTakingResetButton">
               <Properties>
@@ -911,6 +945,9 @@
                   <Dimension value="[85, 60]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="milkTakingResetButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="milkTakingDeleteButton">
               <Properties>
@@ -919,6 +956,9 @@
                   <Dimension value="[85, 60]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="milkTakingDeleteButtonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -945,9 +985,9 @@
           <Dimension value="[85, 60]"/>
         </Property>
       </Properties>
-      <BindingProperties>
-        <BindingProperty name="alignmentY" source="systemInfoTextArea" target="exitButton" targetPath="alignmentY" updateStrategy="0" immediately="false"/>
-      </BindingProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exitButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="milkTakingButton">
       <Properties>
@@ -956,6 +996,9 @@
           <Dimension value="[85, 60]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="milkTakingButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="addCowButton">
       <Properties>
@@ -964,6 +1007,9 @@
           <Dimension value="[85, 60]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addCowButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="addHerdButton">
       <Properties>
@@ -972,6 +1018,9 @@
           <Dimension value="[85, 60]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addHerdButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="addFarmButton">
       <Properties>
@@ -980,6 +1029,9 @@
           <Dimension value="[85, 60]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addFarmButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="deleteCowButton">
       <Properties>
@@ -991,6 +1043,9 @@
           <Dimension value="[85, 60]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteCowButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="deleteHerdButton">
       <Properties>
@@ -1002,6 +1057,9 @@
           <Dimension value="[85, 60]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteHerdButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="deleteFarmButton">
       <Properties>
@@ -1013,6 +1071,9 @@
           <Dimension value="[85, 60]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteFarmButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
