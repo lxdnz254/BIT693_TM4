@@ -110,6 +110,22 @@ public class MaxTGUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
+
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        mainScreenPanel = new javax.swing.JPanel();
+        addFarmPanel = new javax.swing.JPanel();
+        addHerdPanel = new javax.swing.JPanel();
+        milkTakingsPanel = new javax.swing.JPanel();
+        systemInfoTextArea = new javax.swing.JTextArea();
+        exitButton = new javax.swing.JButton();
+        milkTakingButton = new javax.swing.JButton();
+        addCowButton = new javax.swing.JButton();
+        addHerdButton = new javax.swing.JButton();
+        addFarmButton = new javax.swing.JButton();
+        deleteCowButton = new javax.swing.JButton();
+        deleteHerdButton = new javax.swing.JButton();
+        deleteFarmButton = new javax.swing.JButton();
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         mainScreenPanel = new javax.swing.JPanel();
@@ -784,6 +800,8 @@ public class MaxTGUI extends javax.swing.JFrame {
                     .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(46, Short.MAX_VALUE))
         );
+
+        bindingGroup.bind();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
