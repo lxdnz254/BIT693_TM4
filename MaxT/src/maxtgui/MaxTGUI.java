@@ -5,12 +5,20 @@
  */
 package maxtgui;
 
+import maxtcore.*;
+import java.util.*;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 /**
  *
  * @author acer
  */
 public class MaxTGUI extends javax.swing.JFrame {
 
+    private MaxTCoord maxTCoord;
+    private ArrayList<Farm> farms;
+    private ArrayList<Herd> herds;
+    private ArrayList<Cow> cows;
     /**
      * Creates new form MaxTGUI
      */
@@ -19,6 +27,60 @@ public class MaxTGUI extends javax.swing.JFrame {
         systemInfoTextArea.setText("System Information: This is only a prototype application. \r\n\r\n" +
                 "Functionality is limited to navigation and examples of system functions, " +
                 "which will be displayed in this area.");
+        maxTCoord = new MaxTCoord();
+        displayFarmList();
+        displayHerdList();
+        displayCowList();
+    }
+    
+    private void displayFarmList()
+    {
+        selectFarmComboBox.removeAllItems();
+        farms = new ArrayList<>(maxTCoord.getFarms());
+        if (farms.size() > 0)
+        {
+            Collections.sort(farms);
+            for (Farm farm: farms) 
+            {
+                selectFarmComboBox.addItem(farm.getFarmName());
+            }
+        }
+        else
+        {
+            selectFarmComboBox.addItem("No farms created");
+            selectFarmComboBox.setEnabled(false);
+        }
+    }
+    
+    private void displayHerdList()
+    {
+        selectHerdComboBox.removeAllItems();
+        
+        if (selectFarmComboBox.isEnabled())
+        {
+            
+        }
+        else
+        {
+            selectHerdComboBox.addItem("No herds available");
+            selectHerdComboBox.setEnabled(false);
+        }
+    }
+    
+    private void displayCowList()
+    {
+        selectCowList.removeAll();
+        
+        if (selectHerdComboBox.isEnabled())
+        {
+            
+        }
+        else
+        {
+            String[] data = {"No cows available"};
+            selectCowList.setListData(data);
+            selectCowList.setEnabled(false);
+        }
     }
     
     private void addCow() {
@@ -110,22 +172,6 @@ public class MaxTGUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
-
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        mainScreenPanel = new javax.swing.JPanel();
-        addFarmPanel = new javax.swing.JPanel();
-        addHerdPanel = new javax.swing.JPanel();
-        milkTakingsPanel = new javax.swing.JPanel();
-        systemInfoTextArea = new javax.swing.JTextArea();
-        exitButton = new javax.swing.JButton();
-        milkTakingButton = new javax.swing.JButton();
-        addCowButton = new javax.swing.JButton();
-        addHerdButton = new javax.swing.JButton();
-        addFarmButton = new javax.swing.JButton();
-        deleteCowButton = new javax.swing.JButton();
-        deleteHerdButton = new javax.swing.JButton();
-        deleteFarmButton = new javax.swing.JButton();
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         mainScreenPanel = new javax.swing.JPanel();
@@ -331,12 +377,10 @@ public class MaxTGUI extends javax.swing.JFrame {
         addFarmPanelLayout.setHorizontalGroup(
             addFarmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(addFarmPanelLayout.createSequentialGroup()
+                .addGap(50, 50, 50)
                 .addGroup(addFarmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(addFarmLabel)
                     .addGroup(addFarmPanelLayout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(addFarmLabel))
-                    .addGroup(addFarmPanelLayout.createSequentialGroup()
-                        .addGap(50, 50, 50)
                         .addGroup(addFarmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(farmNameLabel)
                             .addComponent(farmLocationLabel))
@@ -800,8 +844,6 @@ public class MaxTGUI extends javax.swing.JFrame {
                     .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(46, Short.MAX_VALUE))
         );
-
-        bindingGroup.bind();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
