@@ -207,6 +207,9 @@
                   </StringArray>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="selectFarmComboBoxItemStateChanged"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="selectHerdLabel">
               <Properties>
@@ -227,6 +230,9 @@
                   </StringArray>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="selectHerdComboBoxItemStateChanged"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="selectCowLabel">
               <Properties>
