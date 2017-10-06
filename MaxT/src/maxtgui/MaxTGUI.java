@@ -40,10 +40,8 @@ public class MaxTGUI extends javax.swing.JFrame {
         if (farms.size() > 0)
         {
             Collections.sort(farms);
-            for (Farm farm: farms) 
-            {
-                selectFarmComboBox.addItem(farm.getFarmName());
-            }
+            selectFarmComboBox.setModel(new DefaultComboBoxModel(farms.toArray()));
+            selectFarmComboBox.setEnabled(true);
         }
         else
         {
@@ -58,7 +56,19 @@ public class MaxTGUI extends javax.swing.JFrame {
         
         if (selectFarmComboBox.isEnabled())
         {
-            
+            Farm theFarm = farms.get(selectFarmComboBox.getSelectedIndex());
+            herds = new ArrayList<>(maxTCoord.getHerds(theFarm));
+            if (herds.size() > 0)
+            {
+                Collections.sort(herds);
+                selectHerdComboBox.setModel(new DefaultComboBoxModel(herds.toArray()));              
+                selectHerdComboBox.setEnabled(true);
+            }
+            else
+            {
+                selectHerdComboBox.addItem("No herds currently on this farm");
+                selectHerdComboBox.setEnabled(false);
+            }
         }
         else
         {
@@ -73,7 +83,20 @@ public class MaxTGUI extends javax.swing.JFrame {
         
         if (selectHerdComboBox.isEnabled())
         {
-            
+            Herd theHerd = herds.get(selectHerdComboBox.getSelectedIndex());
+            cows = new ArrayList<>(maxTCoord.getCows(theHerd));
+            if (cows.size() > 0)
+            {
+                Collections.sort(cows);
+                selectCowList.setListData(cows.toArray());
+                selectCowList.setEnabled(true);
+            }
+            else
+            {
+                String[] data = {"No cows currently in this herd"};
+                selectCowList.setListData(data);
+                selectCowList.setEnabled(false);
+            }
         }
         else
         {
@@ -84,7 +107,18 @@ public class MaxTGUI extends javax.swing.JFrame {
     }
     
     private void addCow() {
-        systemInfoTextArea.setText("System Information: A Cow has been added to the Herd.");
+        if (maxTCoord.addCow(herds.get(selectHerdComboBox.getSelectedIndex()),
+                                farms.get(selectFarmComboBox.getSelectedIndex())))
+        {
+            systemInfoTextArea.setText("System Information: A Cow has been added to the Herd: " +
+                    herds.get(selectHerdComboBox.getSelectedIndex()));
+            displayCowList();
+        }
+        else
+        {
+            systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
+        }
+        
     }
     
     private void addHerd() {

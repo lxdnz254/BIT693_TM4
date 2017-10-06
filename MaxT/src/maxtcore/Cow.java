@@ -16,6 +16,11 @@ public class Cow implements Comparable<Cow>{
     private String ident;
     private MilkTaking milkYield;
     
+    /**
+     *
+     * @param aFarm
+     * @param aHerd
+     */
     public Cow(Farm aFarm, Herd aHerd)
     {
         id++;
@@ -23,11 +28,19 @@ public class Cow implements Comparable<Cow>{
         milkYield = new MilkTaking();
     }
     
+    /**
+     *
+     * @return
+     */
     public String getCowId()
     {
         return ident;
     }
     
+    /**
+     *
+     * @return
+     */
     public MilkTaking getMilkYield()
     {
         return milkYield;
@@ -38,6 +51,7 @@ public class Cow implements Comparable<Cow>{
         aHerd.addCow(this);
     }
     
+    @Override
     public boolean equals (Object obj)
     {
         if (this==obj) return true;
@@ -48,11 +62,24 @@ public class Cow implements Comparable<Cow>{
     }
 
     @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 71 * hash + Objects.hashCode(this.ident);
+        return hash;
+    }
+
+    @Override
     public int compareTo(Cow o) {
          // compareTo should return < 0 if this is supposed to be
         // less than other, > 0 if this is supposed to be greater than 
         // other and 0 if they are supposed to be equal
         int last = this.ident.length() - o.ident.length();
         return last == 0 ? this.ident.compareTo(o.ident) : last;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return this.getCowId();
     }
 }

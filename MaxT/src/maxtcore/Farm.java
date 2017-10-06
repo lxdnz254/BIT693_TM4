@@ -19,6 +19,11 @@ public class Farm implements Comparable<Farm>{
     private String location;
     private Collection<Herd> herds;
     
+    /**
+     *
+     * @param name
+     * @param location
+     */
     public Farm(String name, String location) {
         id++;
         ident = IntToLetters(id);
@@ -38,18 +43,34 @@ public class Farm implements Comparable<Farm>{
         return result;
     }
     
+    /**
+     *
+     * @return
+     */
     public String getFarmId() {
         return ident;
     }
     
+    /**
+     *
+     * @return
+     */
     public String getFarmName() {
         return farmName;
     }
     
+    /**
+     *
+     * @return
+     */
     public String getFarmLocation() {
         return location;
     }
     
+    /**
+     *
+     * @return
+     */
     public Collection<Herd> getHerds() {
         return herds;
     }
@@ -58,6 +79,7 @@ public class Farm implements Comparable<Farm>{
         herds.add(aHerd);
     }
     
+    @Override
     public boolean equals (Object obj)
     {
         if (this==obj) return true;
@@ -68,11 +90,24 @@ public class Farm implements Comparable<Farm>{
     }
 
     @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + Objects.hashCode(this.ident);
+        return hash;
+    }
+
+    @Override
     public int compareTo(Farm o) {
         // compareTo should return < 0 if this is supposed to be
         // less than other, > 0 if this is supposed to be greater than 
         // other and 0 if they are supposed to be equal
         int last = this.ident.length() - o.ident.length();
         return last == 0 ? this.ident.compareTo(o.ident) : last;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return this.getFarmName();
     }
 }

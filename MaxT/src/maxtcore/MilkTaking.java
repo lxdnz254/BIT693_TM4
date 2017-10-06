@@ -14,26 +14,47 @@ public class MilkTaking {
     private int amYield;
     private int pmYield;
     
+    /**
+     *
+     */
     public MilkTaking()
     {
         amYield = 0;
         pmYield = 0;
     }
     
+    /**
+     *
+     * @param am
+     * @param pm
+     */
     public MilkTaking(int am, int pm)
     {
         amYield = am;
         pmYield = pm;
     }
     
+    /**
+     *
+     * @return
+     */
     public int getAmYield() {
         return amYield;
     }
     
+    /**
+     *
+     * @return
+     */
     public int getPmYield() {
         return pmYield;
     }
     
+    /**
+     *
+     * @param am
+     * @param pm
+     */
     public void setYield(int am, int pm)
     {
         amYield = am;
