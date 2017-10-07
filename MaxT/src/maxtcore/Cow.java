@@ -14,7 +14,8 @@ public class Cow implements Comparable<Cow>{
     
     private static int id = 99;
     private String ident;
-    private MilkTaking milkYield;
+    private MilkYield milkYield;
+    private boolean hasValidMilkYield;
     
     /**
      *
@@ -25,7 +26,8 @@ public class Cow implements Comparable<Cow>{
     {
         id++;
         ident = aFarm.getFarmId()+"-"+aHerd.getHerdId()+"-"+Integer.toString(id);
-        milkYield = new MilkTaking();
+        milkYield = new MilkYield();
+        hasValidMilkYield = false;
     }
     
     /**
@@ -41,9 +43,23 @@ public class Cow implements Comparable<Cow>{
      *
      * @return
      */
-    public MilkTaking getMilkYield()
+    public MilkYield getMilkYield()
     {
         return milkYield;
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public boolean hasValidMilkYield()
+    {
+        return hasValidMilkYield;
+    }
+    
+    
+    void setValidMilkYield(boolean b) {
+        hasValidMilkYield = b;
     }
     
     void addCowToHerd(Herd aHerd)

@@ -38,7 +38,7 @@ public class CoordTest {
     {
         assertTrue(coord.addFarm("NewFarm", "Waikato"));
         farms = new ArrayList<>(coord.getFarms());
-        assertTrue(farms.size() == 2);
+        assertTrue(farms.size() == 1);
         assertTrue(farms.get(0).getFarmName().equals("NewFarm"));
     }
     
@@ -57,7 +57,7 @@ public class CoordTest {
         assertTrue(coord.addCow(herd, farm));
         cows = new ArrayList<>(coord.getCows(herd));
         assertTrue(cows.size() == 1);
-        assertTrue(cows.get(0).getCowId().equals(farm.getFarmId()+"-"+herd.getHerdId()+"-103"));
+        assertTrue(cows.get(0).getCowId().equals(farm.getFarmId()+"-"+herd.getHerdId()+"-100"));
     }
     
     @Test

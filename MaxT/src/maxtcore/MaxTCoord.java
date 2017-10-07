@@ -25,9 +25,13 @@ public class MaxTCoord {
         errors = new ArrayList<>();
         farms = new HashSet();
         
+        // Some initial data commented out after testing
+        
+        // <editor-fold defaultstate="collapsed">
         /*
         Acceptance test initial data when testing gui builds.
-        */
+        
+        
         if (addFarm("NewFarm", "Waikato"))
         {
             System.out.println("Added NewFarm!");
@@ -54,6 +58,9 @@ public class MaxTCoord {
         {
             System.out.println(GetLastError());
         }
+        */
+        
+        // </editor-fold>
     }
     
     /**
@@ -84,6 +91,11 @@ public class MaxTCoord {
     {
         return aHerd.getCows();
     }
+
+//******************************************************************************
+    // This section deals with adding objects to the system
+    
+    // <editor-fold defaultstate="collapsed">
     
     /**
      *
@@ -154,6 +166,45 @@ public class MaxTCoord {
         }
         
     }
+
+    /**
+     * 
+     * @param aCow
+     * @param am
+     * @param pm
+     * @return 
+     */
+    public boolean addMilkTaking(Cow aCow, int am, int pm)
+    {
+        try
+        {
+            MilkYield milkYield = aCow.getMilkYield();
+            milkYield.setYield(am, pm);
+            aCow.setValidMilkYield(true);
+            return true;
+        }
+        catch (Exception e)
+        {
+            AddErrors("Error: " + e);
+            return false;
+        }
+    }
+    
+    // </editor-fold>
+    
+//******************************************************************************
+    // This section deals with deleting objects from the system
+    
+    // <editor-fold defaultstate="collapsed">
+    
+    
+    
+    // </editor-fold>
+    
+//******************************************************************************
+    // This section deals with error reporting to the user interface
+    
+    // <editor-fold defaultstate="collapsed">
     
     private void AddErrors(String e)
     {
@@ -177,4 +228,6 @@ public class MaxTCoord {
     {
         return errors.get(errors.size()-1);
     }
+    
+    // </editor-fold>
 }

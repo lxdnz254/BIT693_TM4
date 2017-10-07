@@ -26,6 +26,10 @@ public class MaxTGUI extends javax.swing.JFrame {
     private boolean farmNameEdit;
     private boolean farmLocationEdit;
     private boolean herdNameEdit;
+    // Error reporters
+    final String[] noHerds = {"No herds currently available"};
+    final String[] noFarms = {"No farms currently available"};
+    final String[] noCows = {"No cows currently available"};
     /**
      * Creates new form MaxTGUI
      */
@@ -96,12 +100,14 @@ public class MaxTGUI extends javax.swing.JFrame {
             {
                 selectHerdComboBox.addItem("No herds currently on this farm");
                 selectHerdComboBox.setEnabled(false);
+                addCowButton.setEnabled(false);
             }
         }
         else
         {
             selectHerdComboBox.addItem("No herds available");
             selectHerdComboBox.setEnabled(false);
+            addCowButton.setEnabled(false);
         }
     }
 
@@ -111,6 +117,7 @@ public class MaxTGUI extends javax.swing.JFrame {
 
         if (selectHerdComboBox.isEnabled())
         {
+            addCowButton.setEnabled(true);
             Herd theHerd = herds.get(selectHerdComboBox.getSelectedIndex());
             cows = new ArrayList<>(maxTCoord.getCows(theHerd));
             if (cows.size() > 0)
@@ -288,7 +295,38 @@ public class MaxTGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed">
     private void addMilkTaking() 
     {
+       currentCowList.removeAll();
        
+       if(!herds.isEmpty())
+       {
+            currentHerdComboBox.setModel(new DefaultComboBoxModel(herds.toArray()));
+            currentHerdComboBox.setSelectedIndex(selectHerdComboBox.getSelectedIndex());
+            cows = new ArrayList<>(maxTCoord.getCows(herds.get(currentHerdComboBox.getSelectedIndex())));
+            if (!cows.isEmpty())
+            {
+                currentCowList.setListData(cows.toArray());
+            }
+            else
+            {
+                currentCowList.setListData(noCows);
+            }
+       }
+       else
+       {
+           currentHerdComboBox.setModel(new DefaultComboBoxModel(noHerds));
+       }
+       
+       
+       if (!selectCowList.isSelectionEmpty())
+       {
+           currentCowField.setText(cows.get(selectCowList.getSelectedIndex()).getCowId());
+           cowMilkIntervalField.setText("Cow is milked on a " + herds.get(currentHerdComboBox.getSelectedIndex()).getHerdInterval());
+       }
+       else
+       {
+           systemInfoTextArea.setText("System Information: No cow currently selected to add Milk Yield to.");
+           milkTakingSaveButton.setEnabled(false);
+       }
     }
     
     private void saveMilkTaking() 

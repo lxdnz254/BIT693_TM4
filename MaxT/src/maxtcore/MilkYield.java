@@ -9,7 +9,7 @@ package maxtcore;
  *
  * @author acer
  */
-public class MilkTaking {
+public class MilkYield {
     
     private int amYield;
     private int pmYield;
@@ -17,7 +17,7 @@ public class MilkTaking {
     /**
      *
      */
-    public MilkTaking()
+    public MilkYield()
     {
         amYield = 0;
         pmYield = 0;
@@ -28,7 +28,7 @@ public class MilkTaking {
      * @param am
      * @param pm
      */
-    public MilkTaking(int am, int pm)
+    public MilkYield(int am, int pm)
     {
         amYield = am;
         pmYield = pm;
