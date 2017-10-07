@@ -10,10 +10,12 @@ import static maxtcore.MilkInterval.*;
 import java.util.*;
 import org.junit.*;
 import static org.junit.Assert.*;
+import org.junit.runners.MethodSorters;
 /**
  *
  * @author acer
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CoordTest {
     
     private MaxTCoord coord;
@@ -30,18 +32,18 @@ public class CoordTest {
         farm = new Farm("TestFarm", "Waikato");
         herd = new Herd("TestHerd", EIGHT_16);
     }
-    
+     
     @Test
-    public void testAddFarm()
+    public void test_1_AddFarm()
     {
         assertTrue(coord.addFarm("NewFarm", "Waikato"));
         farms = new ArrayList<>(coord.getFarms());
-        assertTrue(farms.size() == 1);
+        assertTrue(farms.size() == 2);
         assertTrue(farms.get(0).getFarmName().equals("NewFarm"));
     }
     
     @Test
-    public void testAddHerdToFarm()
+    public void test_2_AddHerdToFarm()
     {
         assertTrue(coord.addHerd("Herd1", EIGHT_16, farm));
         herds = new ArrayList<>(coord.getHerds(farm));
@@ -50,16 +52,16 @@ public class CoordTest {
     }
     
     @Test
-    public void testAddCowToHerd()
+    public void test_3_AddCowToHerd()
     {
         assertTrue(coord.addCow(herd, farm));
         cows = new ArrayList<>(coord.getCows(herd));
         assertTrue(cows.size() == 1);
-        assertTrue(cows.get(0).getCowId().equals(farm.getFarmId()+"-"+herd.getHerdId()+"-100"));
+        assertTrue(cows.get(0).getCowId().equals(farm.getFarmId()+"-"+herd.getHerdId()+"-103"));
     }
     
     @Test
-    public void testFarmIDGoesDouble()
+    public void test_4_FarmIDGoesDouble()
     {
         for (int i = 1; i < 27; i++)
         {

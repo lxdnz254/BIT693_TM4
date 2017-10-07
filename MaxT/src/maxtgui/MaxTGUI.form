@@ -102,6 +102,9 @@
           <Dimension value="[690, 460]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jTabbedPane1StateChanged"/>
+      </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
@@ -396,6 +399,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="User input"/>
               </Properties>
+              <Events>
+                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="farmNameFieldKeyPressed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="farmLocationLabel">
               <Properties>
@@ -412,6 +418,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="User input"/>
               </Properties>
+              <Events>
+                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="farmLocationFieldKeyPressed"/>
+              </Events>
             </Component>
             <Container class="javax.swing.JScrollPane" name="currentFarmScrollPanel">
               <AuxValues>
@@ -581,6 +590,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="User input"/>
               </Properties>
+              <Events>
+                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="herdNameFieldKeyPressed"/>
+              </Events>
             </Component>
             <Container class="javax.swing.JPanel" name="milkingIntervalPanel">
               <Properties>

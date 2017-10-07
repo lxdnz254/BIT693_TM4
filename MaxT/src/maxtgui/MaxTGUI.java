@@ -14,10 +14,18 @@ import javax.swing.DefaultComboBoxModel;
  */
 public class MaxTGUI extends javax.swing.JFrame {
 
-    private MaxTCoord maxTCoord;
+    // The coordinator object for communicating with the core system
+    private final MaxTCoord maxTCoord;
+    // ArraysLists for populating farm, herd and cow lists
     private ArrayList<Farm> farms;
     private ArrayList<Herd> herds;
     private ArrayList<Cow> cows;
+    // The MilkInterval class
+    private MilkInterval milkInterval;
+    // True or false? has the user edited a field.
+    private boolean farmNameEdit;
+    private boolean farmLocationEdit;
+    private boolean herdNameEdit;
     /**
      * Creates new form MaxTGUI
      */
@@ -136,7 +144,9 @@ public class MaxTGUI extends javax.swing.JFrame {
 
     private void addFarm() 
     {
-        jTabbedPane1.setSelectedIndex(1);
+        farmNameEdit = false;
+        farmLocationEdit = false;
+        farmSaveButton.setEnabled(false);
         currentFarmList.removeAll();
         if (farms.size() > 0)
         {
@@ -167,7 +177,10 @@ public class MaxTGUI extends javax.swing.JFrame {
     private void resetFarm() 
     {
         farmNameField.setText("User Input");
+        farmNameEdit = false;
         farmLocationField.setText("User Input");
+        farmLocationEdit = false;
+        farmSaveButton.setEnabled(false);
         systemInfoTextArea.setText("System Information: Re-enter the Farm details.");
     }
 
@@ -178,18 +191,64 @@ public class MaxTGUI extends javax.swing.JFrame {
     
     // <editor-fold defaultstate="collapsed"> 
     private void addHerd() {
-        jTabbedPane1.setSelectedIndex(2);
+        
+        String[] farmEmpty = {"No Farms exist currently"};
+        String[] herdEmpty = {"No herds exist"};
+        herdNameEdit = false;
+        herdSaveButton.setEnabled(false);
+        
+        if (!farms.isEmpty())
+        {
+            currentSelectedFarm.setModel(new DefaultComboBoxModel(farms.toArray()));
+            currentSelectedFarm.setSelectedIndex(selectFarmComboBox.getSelectedIndex());
+            herds = new ArrayList<>(maxTCoord.getHerds(farms.get(currentSelectedFarm.getSelectedIndex())));
+            if (!herds.isEmpty())
+            {
+                currentHerdList.setListData(herds.toArray());
+            }
+            else
+            {
+                currentHerdList.setListData(herdEmpty);
+            }
+            
+        }
+        else
+        {
+            currentSelectedFarm.setModel(new DefaultComboBoxModel(farmEmpty));
+            currentHerdList.setListData(herdEmpty);
+        }
+        
     }
     
+    /**
+     * Method to action storing a herd in the system
+     */
     private void saveHerd() 
     {
-        systemInfoTextArea.setText("System Information: A Herd has been added to the Farm.");
+        //TODO: validate fields or wait for error?
+        if (maxTCoord.addHerd(herdNameField.getText(),
+                milkInterval,
+                farms.get(currentSelectedFarm.getSelectedIndex())))
+        {
+            systemInfoTextArea.setText("System Information: A Herd has been added to the Farm.");
+            addHerd();
+        }
+        else
+        {
+            systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
+        }
     }
-
+    
+    /**
+     * 
+     */
     private void resetHerd() 
     {
+        herdNameField.setText("User input");
+        herdNameEdit = false;
         eightHourRadioButton.setSelected(false);
         nineHourRadioButton.setSelected(false);
+        herdSaveButton.setEnabled(false);
         systemInfoTextArea.setText("System Information: Re-enter the Herd details.");
     }
     
@@ -197,10 +256,12 @@ public class MaxTGUI extends javax.swing.JFrame {
     {
         if (eightHourRadioButton.isSelected()) {
             systemInfoTextArea.setText("System Information: 8 and 16 hour milking interval selected.");
+            milkInterval = MilkInterval.EIGHT_16;
             nineHourRadioButton.setSelected(false);
         } else {
             systemInfoTextArea.setText("System Information: Unselected 8 & 16 hour milk interval. " +
                     "9 & 15 hour interval selected instead");
+            milkInterval = MilkInterval.NINE_15;
             nineHourRadioButton.setSelected(true);
         }
     }
@@ -209,10 +270,12 @@ public class MaxTGUI extends javax.swing.JFrame {
     {
         if (nineHourRadioButton.isSelected()) {
             systemInfoTextArea.setText("System Information: 9 and 15 hour milking interval selected");
+            milkInterval = MilkInterval.NINE_15;
             eightHourRadioButton.setSelected(false);
         } else {
             systemInfoTextArea.setText("System Information: Unselected 9 & 15 hour milking interval. " +
                     "8 & 16 hour interval selected instead.");
+            milkInterval = MilkInterval.EIGHT_16;
             eightHourRadioButton.setSelected(true);
         }
     }
@@ -225,7 +288,7 @@ public class MaxTGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed">
     private void addMilkTaking() 
     {
-        jTabbedPane1.setSelectedIndex(3);
+       
     }
     
     private void saveMilkTaking() 
@@ -360,6 +423,11 @@ public class MaxTGUI extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(820, 640));
 
         jTabbedPane1.setPreferredSize(new java.awt.Dimension(690, 460));
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
 
         selectFarmLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         selectFarmLabel.setText("Select A Farm");
@@ -470,12 +538,22 @@ public class MaxTGUI extends javax.swing.JFrame {
 
         farmNameField.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         farmNameField.setText("User input");
+        farmNameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                farmNameFieldKeyPressed(evt);
+            }
+        });
 
         farmLocationLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         farmLocationLabel.setText("Location:");
 
         farmLocationField.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         farmLocationField.setText("User input");
+        farmLocationField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                farmLocationFieldKeyPressed(evt);
+            }
+        });
 
         currentFarmList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Farm 1", "Farm 2", "Farm 3", "Farm 4", " " };
@@ -569,6 +647,11 @@ public class MaxTGUI extends javax.swing.JFrame {
 
         herdNameField.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         herdNameField.setText("User input");
+        herdNameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                herdNameFieldKeyPressed(evt);
+            }
+        });
 
         milkingIntervalPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Milking Interval", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
         milkingIntervalPanel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -985,17 +1068,17 @@ public class MaxTGUI extends javax.swing.JFrame {
 
     private void milkTakingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_milkTakingButtonActionPerformed
         // TODO add your handling code here:
-        addMilkTaking();
+        jTabbedPane1.setSelectedIndex(3);
     }//GEN-LAST:event_milkTakingButtonActionPerformed
 
     private void addHerdButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addHerdButtonActionPerformed
         // TODO add your handling code here:
-        addHerd();
+        jTabbedPane1.setSelectedIndex(2);
     }//GEN-LAST:event_addHerdButtonActionPerformed
 
     private void addFarmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFarmButtonActionPerformed
         // TODO add your handling code here:
-        addFarm();
+        jTabbedPane1.setSelectedIndex(1);
     }//GEN-LAST:event_addFarmButtonActionPerformed
 
     private void farmSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_farmSaveButtonActionPerformed
@@ -1056,11 +1139,19 @@ public class MaxTGUI extends javax.swing.JFrame {
     private void eightHourRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eightHourRadioButtonActionPerformed
         // TODO add your handling code here:
         selectEightHour();
+        if (herdNameEdit && eightHourRadioButton.isSelected())
+        {
+            herdSaveButton.setEnabled(true);
+        }
     }//GEN-LAST:event_eightHourRadioButtonActionPerformed
 
     private void nineHourRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nineHourRadioButtonActionPerformed
         // TODO add your handling code here:
         selectNineHour();
+        if (herdNameEdit && nineHourRadioButton.isSelected())
+        {
+            herdSaveButton.setEnabled(true);
+        }
     }//GEN-LAST:event_nineHourRadioButtonActionPerformed
 
     private void selectCowListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectCowListMouseClicked
@@ -1068,7 +1159,7 @@ public class MaxTGUI extends javax.swing.JFrame {
         // waits for a double click
         if (evt.getClickCount() == 2) {
             systemInfoTextArea.setText("System Information: Double clicked on the list of cows.");
-            addMilkTaking();
+            jTabbedPane1.setSelectedIndex(3);
         }
     }//GEN-LAST:event_selectCowListMouseClicked
 
@@ -1082,6 +1173,74 @@ public class MaxTGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         displayCowList();
     }//GEN-LAST:event_selectHerdComboBoxItemStateChanged
+
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        // TODO add your handling code here:
+        if(maxTCoord != null)
+        {
+            int index = jTabbedPane1.getSelectedIndex();
+            switch(index)
+            {
+                case(0):
+                {
+                    displayFarmList();
+                    displayHerdList();
+                    displayCowList();
+                    break;
+                }
+                case(1):
+                {
+                    addFarm();
+                    break;
+                }
+                case(2):
+                {
+                    addHerd();
+                    break;
+                }
+                case(3):
+                {
+                    addMilkTaking();
+                }
+            }
+        }
+    }//GEN-LAST:event_jTabbedPane1StateChanged
+
+    private void farmNameFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_farmNameFieldKeyPressed
+        // TODO add your handling code here:
+        if (!(evt.getKeyChar()==27||evt.getKeyChar()==65535))
+        {
+            farmNameEdit = true;
+        }
+        if (farmNameEdit && farmLocationEdit)
+        {
+            farmSaveButton.setEnabled(true);
+        }
+    }//GEN-LAST:event_farmNameFieldKeyPressed
+
+    private void farmLocationFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_farmLocationFieldKeyPressed
+        // TODO add your handling code here:
+        if (!(evt.getKeyChar()==27||evt.getKeyChar()==65535))
+        {
+            farmLocationEdit = true;
+        }
+        if (farmNameEdit && farmLocationEdit)
+        {
+            farmSaveButton.setEnabled(true);
+        }
+    }//GEN-LAST:event_farmLocationFieldKeyPressed
+
+    private void herdNameFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_herdNameFieldKeyPressed
+        // TODO add your handling code here:
+        if (!(evt.getKeyChar()==27||evt.getKeyChar()==65535))
+        {
+            herdNameEdit = true;
+        }
+        if (herdNameEdit && (eightHourRadioButton.isSelected() || nineHourRadioButton.isSelected()))
+        {
+            herdSaveButton.setEnabled(true);
+        }
+    }//GEN-LAST:event_herdNameFieldKeyPressed
 
     /**
      * @param args the command line arguments
