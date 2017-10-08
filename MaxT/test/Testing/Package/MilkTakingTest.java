@@ -14,14 +14,14 @@ import static org.junit.Assert.*;
  */
 public class MilkTakingTest {
     
-    private MilkTaking milkYield;
-    private MilkTaking anotherMilkYield;
+    private MilkYield milkYield;
+    private MilkYield anotherMilkYield;
     
     @Before
     public void runBeforeEachTest()
     {
-        milkYield = new MilkTaking();
-        anotherMilkYield = new MilkTaking(5,5);
+        milkYield = new MilkYield();
+        anotherMilkYield = new MilkYield(5,5);
     }
     
     @Test
