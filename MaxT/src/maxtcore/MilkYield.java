@@ -9,31 +9,52 @@ package maxtcore;
  *
  * @author acer
  */
-public class MilkTaking {
+public class MilkYield {
     
     private int amYield;
     private int pmYield;
     
-    public MilkTaking()
+    /**
+     *
+     */
+    public MilkYield()
     {
         amYield = 0;
         pmYield = 0;
     }
     
-    public MilkTaking(int am, int pm)
+    /**
+     *
+     * @param am
+     * @param pm
+     */
+    public MilkYield(int am, int pm)
     {
         amYield = am;
         pmYield = pm;
     }
     
+    /**
+     *
+     * @return
+     */
     public int getAmYield() {
         return amYield;
     }
     
+    /**
+     *
+     * @return
+     */
     public int getPmYield() {
         return pmYield;
     }
     
+    /**
+     *
+     * @param am
+     * @param pm
+     */
     public void setYield(int am, int pm)
     {
         amYield = am;

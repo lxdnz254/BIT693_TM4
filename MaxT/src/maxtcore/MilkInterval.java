@@ -10,8 +10,16 @@ package maxtcore;
  * @author acer
  */
 public enum MilkInterval {
-     EIGHT_16,
-     NINE_15;
+
+    /**
+     *
+     */
+    EIGHT_16,
+
+    /**
+     *
+     */
+    NINE_15;
      
      public String toString() {
          

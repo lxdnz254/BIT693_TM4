@@ -19,6 +19,11 @@ public class Herd implements Comparable<Herd>{
     private MilkInterval milkingInterval;
     private Collection<Cow> cows;
     
+    /**
+     *
+     * @param aName
+     * @param interval
+     */
     public Herd(String aName, MilkInterval interval)
     {
         id++;
@@ -28,21 +33,42 @@ public class Herd implements Comparable<Herd>{
         cows = new HashSet();
     }
     
+    public Herd()
+    {
+        ident = null;
+    }
+    
+    /**
+     *
+     * @return
+     */
     public String getHerdId()
     {
         return ident;
     }
     
+    /**
+     *
+     * @return
+     */
     public String getHerdName()
     {
         return name;
     }
     
+    /**
+     *
+     * @return
+     */
     public MilkInterval getHerdInterval()
     {
         return milkingInterval;
     }
     
+    /**
+     *
+     * @return
+     */
     public Collection<Cow> getCows()
     {
         return cows;
@@ -53,10 +79,20 @@ public class Herd implements Comparable<Herd>{
         cows.add(aCow);
     }
     
+    /**
+     *
+     * @param aFarm
+     */
     public void addHerdToFarm(Farm aFarm) {
         aFarm.addHerd(this);
     }
     
+    public void deleteCow(Cow aCow)
+    {
+        cows.remove(aCow);
+    }
+    
+    @Override
     public boolean equals (Object obj)
     {
         if (this==obj) return true;
@@ -67,11 +103,24 @@ public class Herd implements Comparable<Herd>{
     }
 
     @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 73 * hash + Objects.hashCode(this.ident);
+        return hash;
+    }
+
+    @Override
     public int compareTo(Herd o) {
          // compareTo should return < 0 if this is supposed to be
         // less than other, > 0 if this is supposed to be greater than 
         // other and 0 if they are supposed to be equal
         int last = this.ident.length() - o.ident.length();
         return last == 0 ? this.ident.compareTo(o.ident) : last;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return this.getHerdName();
     }
 }
