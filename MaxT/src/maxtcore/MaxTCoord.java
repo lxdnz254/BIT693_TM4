@@ -6,6 +6,7 @@
 package maxtcore;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  *
@@ -18,7 +19,7 @@ public class MaxTCoord {
     private ArrayList<String> errors;
     
     /**
-     *
+     * The main coordinating class for the maxtcore system
      */
     public MaxTCoord()
     {
@@ -64,7 +65,7 @@ public class MaxTCoord {
     }
     
     /**
-     *
+     * Gets the Collection of Farm objects stored in the coordinating object
      * @return
      */
     public Collection<Farm> getFarms()
@@ -73,7 +74,7 @@ public class MaxTCoord {
     }
     
     /**
-     *
+     * Gets the Collection of Herd objects associated with a Farm object
      * @param aFarm
      * @return
      */
@@ -83,7 +84,7 @@ public class MaxTCoord {
     }
  
     /**
-     *
+     * Returns a Collection of Cow objects associated with a Herd object
      * @param aHerd
      * @return
      */
@@ -107,6 +108,15 @@ public class MaxTCoord {
     {
         try
         {
+            // put a validation for equal farm names here
+            for (Farm checkFarm: farms)
+            {
+                if (checkFarm.getFarmName().equals(name))
+                {
+                    AddErrors("Farm not saved, Farm name matches another.");
+                    return false;
+                }
+            }
             Farm farm = new Farm(name, location);
             farms.add(farm);
             return true;
@@ -131,6 +141,16 @@ public class MaxTCoord {
     {
         try
         {
+            // put a validation for equal names here
+            for (Herd checkHerd : getHerds(aFarm))
+            {
+                if (checkHerd.getHerdName().equals(name))
+                {
+                    AddErrors("Herd not saved, a herd matching this name on "+ aFarm 
+                            + " already exists.");
+                    return false;
+                }
+            }
             Herd herd = new Herd(name, interval);
             aFarm.addHerd(herd);
             return true;
@@ -141,7 +161,6 @@ public class MaxTCoord {
             AddErrors("Error: " + e);
             return false;
         }
-       
     }
     
     /**
@@ -197,8 +216,186 @@ public class MaxTCoord {
     
     // <editor-fold defaultstate="collapsed">
     
+    /**
+     * Deletes the MilkYield object values held by a Cow object
+     * @param aCow
+     * @return true or false that the deletion has taken place
+     */
+    public boolean deleteAMilkYield(Cow aCow)
+    {
+        try
+        {
+            if(aCow.hasValidMilkYield())
+            {
+                aCow.deleteMilkYield();
+                return true;
+            }
+            else
+            {
+                AddErrors("The Cow " + aCow.getCowId() + " has no milk yield to delete!");
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            AddErrors("Error: " + e);
+            return false;
+        }
+    }
     
+    /**
+     * Deletes a Cow object from the Collection of Cow objects held by a Herd object 
+     * @param aCow
+     * @param aHerd
+     * @return true or false that the deletion has taken place
+     */
+    public boolean deleteACow(Cow aCow, Herd aHerd)
+    {
+        try
+        {
+            Collection<Cow> cows = getCows(aHerd);
+            
+            if (!cows.isEmpty()){
+                Cow deleteCow = new Cow();
+                for (Cow theCow: cows)
+                {
+                    if (theCow.equals(aCow))
+                    {
+                        deleteCow = theCow;
+                    }
+                }
+                if (deleteCow.toString() != null)
+                {
+                    aHerd.deleteCow(aCow);
+                    return true;
+                }
+                else
+                {
+                    AddErrors("The system could not find the matching cow to delete");
+                    return false;
+                }
+            }
+            else
+            {
+                AddErrors("The herd has no cows to delete");
+                return false;
+            }
+            
+        }
+        catch (Exception e)
+        {
+            AddErrors("Error: " + e);
+            return false;
+        } 
+    }
     
+    /**
+     * Deletes a Herd object from the Collection of Herd objects held by a Farm object.
+     * @param aHerd
+     * @param aFarm
+     * @return true or false that the deletion has taken place
+     */
+    public boolean deleteAHerd(Herd aHerd, Farm aFarm)
+    {
+        try
+        {
+            Collection<Herd> herds = aFarm.getHerds();
+            
+            if (!herds.isEmpty()) {
+                Herd deleteHerd = new Herd();
+                
+                for (Herd theHerd: herds)
+                {
+                    if (theHerd.equals(aHerd))
+                    {
+                        deleteHerd = theHerd;
+                    }                       
+                }
+                if (deleteHerd.toString() != null)
+                {
+                    Collection<Cow> cows = deleteHerd.getCows();
+                    if (cows.isEmpty())
+                    {
+                        aFarm.deleteHerd(deleteHerd);
+                        return true;
+                    }
+                    else
+                    {
+                        AddErrors("The herd cannot be deleted, cows are assigned to the herd.");
+                        return false;
+                    }
+                }
+                else
+                {
+                    AddErrors("No herd could be found matching on this Farm.");
+                    return false;
+                }
+            }
+            else
+            {
+                AddErrors("There are no herds found with this farm.");
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            AddErrors("Error: " + e);
+            return false;
+        }
+    }
+    
+    /**
+     * Deletes a Farm object from the Collection of Farm objects held by the Coordinating class
+     * @param aFarm
+     * @return true or false that the deletion has taken palce
+     */
+    public boolean deleteAFarm(Farm aFarm)
+    {
+        try
+        {
+            if (!farms.isEmpty())
+            {
+                Farm deleteFarm = new Farm();
+                for (Farm theFarm: farms)
+                {
+                    if (theFarm.equals(aFarm))
+                    {
+                        deleteFarm = theFarm;
+                    }
+                }
+                if (deleteFarm.toString() != null)
+                {
+                    Collection<Herd> herds = deleteFarm.getHerds();
+                    if (herds.isEmpty())
+                    {
+                        farms.remove(deleteFarm);
+                        return true;
+                    }
+                    else
+                    {
+                        AddErrors("Farm not deleted, herds still exist on this Farm!");
+                        return false;
+                    }
+                    
+                }
+                else
+                {
+                    AddErrors("No matching Farms found!");
+                    return false;
+                }
+            }
+            else
+            {
+                AddErrors("There are no farms to delete!");
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            AddErrors("Error: " + e);
+            return false;
+        }
+    }
     // </editor-fold>
     
 //******************************************************************************
@@ -212,7 +409,7 @@ public class MaxTCoord {
     }
     
     /**
-     *
+     * Returns the entire collection of errors created while system has been running
      * @return
      */
     public ArrayList<String> GetAllErrors()
@@ -221,7 +418,7 @@ public class MaxTCoord {
     }
     
     /**
-     *
+     * Returns the most recent error put in the Collection of errors.
      * @return
      */
     public String GetLastError()

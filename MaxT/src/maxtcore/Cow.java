@@ -13,7 +13,7 @@ import java.util.*;
 public class Cow implements Comparable<Cow>{
     
     private static int id = 99;
-    private String ident;
+    private final String ident;
     private MilkYield milkYield;
     private boolean hasValidMilkYield;
     
@@ -30,6 +30,11 @@ public class Cow implements Comparable<Cow>{
         hasValidMilkYield = false;
     }
     
+    public Cow()
+    {
+        ident = null;
+    }
+    
     /**
      *
      * @return
@@ -40,26 +45,35 @@ public class Cow implements Comparable<Cow>{
     }
     
     /**
-     *
+     *  Returns the MilkYield object associated with this Cow object
      * @return
      */
     public MilkYield getMilkYield()
     {
-        return milkYield;
+        return this.milkYield;
     }
     
     /**
-     * 
+     * Returns the state of hasValidMilkYield
      * @return 
      */
     public boolean hasValidMilkYield()
     {
-        return hasValidMilkYield;
+        return this.hasValidMilkYield;
+    }
+    
+    /**
+     * "Deletes" the current milkYield and instantiates a null copy.
+     */
+    public void deleteMilkYield()
+    {
+        this.milkYield = new MilkYield();
+        setValidMilkYield(false);
     }
     
     
     void setValidMilkYield(boolean b) {
-        hasValidMilkYield = b;
+        this.hasValidMilkYield = b;
     }
     
     void addCowToHerd(Herd aHerd)
@@ -68,6 +82,9 @@ public class Cow implements Comparable<Cow>{
     }
     
     @Override
+    /**
+     * Overrides the equals() method and checks the "ident" variable for a match
+     */
     public boolean equals (Object obj)
     {
         if (this==obj) return true;
@@ -96,6 +113,10 @@ public class Cow implements Comparable<Cow>{
     @Override
     public String toString()
     {
+        if (this.hasValidMilkYield())
+        {
+            return this.getCowId().concat(" *");
+        }
         return this.getCowId();
     }
 }

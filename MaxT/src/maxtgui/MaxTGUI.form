@@ -265,7 +265,8 @@
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="selectCowListMouseClicked"/>
+                    <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="selectCowListMousePressed"/>
+                    <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="selectCowListValueChanged"/>
                   </Events>
                 </Component>
               </SubComponents>
@@ -441,6 +442,10 @@
                       </StringArray>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="currentFarmListMouseClicked"/>
+                    <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="currentFarmListValueChanged"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -676,6 +681,10 @@
                       </StringArray>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="currentHerdListMouseClicked"/>
+                    <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="currentHerdListValueChanged"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -842,6 +851,9 @@
                       </StringArray>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="currentCowListValueChanged"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -941,9 +953,6 @@
             </Container>
             <Component class="javax.swing.JButton" name="milkTakingSaveButton">
               <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Tahoma" size="9" style="0"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Add/Update"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[85, 60]"/>

@@ -32,6 +32,11 @@ public class Farm implements Comparable<Farm>{
         herds = new HashSet();
     }
     
+    public Farm()
+    {
+        ident = null;
+    }
+    
     static String IntToLetters(int value)
     {
         String result = "";
@@ -109,5 +114,9 @@ public class Farm implements Comparable<Farm>{
     public String toString()
     {
         return this.getFarmName();
+    }
+
+    public void deleteHerd(Herd aHerd) {
+        herds.remove(aHerd);
     }
 }

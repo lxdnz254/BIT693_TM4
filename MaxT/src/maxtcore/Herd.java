@@ -33,6 +33,11 @@ public class Herd implements Comparable<Herd>{
         cows = new HashSet();
     }
     
+    public Herd()
+    {
+        ident = null;
+    }
+    
     /**
      *
      * @return
@@ -80,6 +85,11 @@ public class Herd implements Comparable<Herd>{
      */
     public void addHerdToFarm(Farm aFarm) {
         aFarm.addHerd(this);
+    }
+    
+    public void deleteCow(Cow aCow)
+    {
+        cows.remove(aCow);
     }
     
     @Override
