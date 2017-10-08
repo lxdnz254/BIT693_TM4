@@ -5,12 +5,31 @@
  */
 package maxtgui;
 
+import maxtcore.*;
+import java.util.*;
+import javax.swing.DefaultComboBoxModel;
 /**
  *
  * @author acer
  */
 public class MaxTGUI extends javax.swing.JFrame {
 
+    // The coordinator object for communicating with the core system
+    private final MaxTCoord maxTCoord;
+    // ArraysLists for populating farm, herd and cow lists
+    private ArrayList<Farm> farms;
+    private ArrayList<Herd> herds;
+    private ArrayList<Cow> cows;
+    // The MilkInterval class
+    private MilkInterval milkInterval;
+    // True or false? has the user edited a field.
+    private boolean farmNameEdit;
+    private boolean farmLocationEdit;
+    private boolean herdNameEdit;
+    // Error reporters
+    final String[] noHerds = {"No herds currently available"};
+    final String[] noFarms = {"No farms currently available"};
+    final String[] noCows = {"No cows currently available"};
     /**
      * Creates new form MaxTGUI
      */
@@ -19,89 +38,425 @@ public class MaxTGUI extends javax.swing.JFrame {
         systemInfoTextArea.setText("System Information: This is only a prototype application. \r\n\r\n" +
                 "Functionality is limited to navigation and examples of system functions, " +
                 "which will be displayed in this area.");
+        maxTCoord = new MaxTCoord();
+        displayFarmList();
+        displayHerdList();
+        displayCowList();
     }
     
-    private void addCow() {
-        systemInfoTextArea.setText("System Information: A Cow has been added to the Herd.");
-    }
-    
-    private void addHerd() {
-        jTabbedPane1.setSelectedIndex(2);
-    }
-    
-    private void addFarm() {
-        jTabbedPane1.setSelectedIndex(1);
-    }
-    
-    private void addMilkTaking() {
-        jTabbedPane1.setSelectedIndex(3);
-    }
-    
-    private void saveHerd() {
-        systemInfoTextArea.setText("System Information: A Herd has been added to the Farm.");
+//**************************************************************************
+    // The methods in this section are concerned with the main screen
+
+    // <editor-fold defaultstate="collapsed"> 
+    private void displayHerdStatistics()
+    {
+        if (selectHerdComboBox.isEnabled() && cows != null) 
+        {
+        statisticsTextArea.setText("For the selected Herd: " 
+                + herds.get(selectHerdComboBox.getSelectedIndex()) + "\r\n\r\n"
+                + "Number of Cows: " + cows.size() + "\r\n\r\n"
+                + "Average Milk Yield: " + "\r\n\r\n"
+                + "MaxT Value: ");
+        }
+        else
+        {
+            statisticsTextArea.setText("No herd data currently available");
+        }
     }
 
-    private void saveFarm() {
-        systemInfoTextArea.setText("System Information: A Farm has been added to the system");
+
+    private void displayFarmList()
+    {
+        //selectFarmComboBox.removeAllItems();
+        farms = new ArrayList<>(maxTCoord.getFarms());
+        if (farms.size() > 0)
+        {
+            Collections.sort(farms);
+            selectFarmComboBox.setModel(new DefaultComboBoxModel(farms.toArray()));
+            selectFarmComboBox.setEnabled(true);
+            addHerdButton.setEnabled(true);
+            jTabbedPane1.setEnabledAt(2, true);
+        }
+        else
+        {
+            selectFarmComboBox.addItem(noFarms);
+            selectFarmComboBox.setEnabled(false);
+            addHerdButton.setEnabled(false);
+            jTabbedPane1.setEnabledAt(2, false);
+        }
     }
-    
-    private void deleteCow() {
-        systemInfoTextArea.setText("System Information: A Cow has been deleted from the Herd.");
+
+    private void displayHerdList()
+    {
+        //selectHerdComboBox.removeAllItems();
+
+        if (selectFarmComboBox.isEnabled())
+        {
+            Farm theFarm = farms.get(selectFarmComboBox.getSelectedIndex());
+            herds = new ArrayList<>(maxTCoord.getHerds(theFarm));
+            if (herds.size() > 0)
+            {
+                Collections.sort(herds);
+                selectHerdComboBox.setModel(new DefaultComboBoxModel(herds.toArray()));              
+                selectHerdComboBox.setEnabled(true);
+            }
+            else
+            {
+                selectHerdComboBox.addItem(noHerds);
+                selectHerdComboBox.setEnabled(false);
+                addCowButton.setEnabled(false);
+            }
+        }
+        else
+        {
+            selectHerdComboBox.addItem(noHerds);
+            selectHerdComboBox.setEnabled(false);
+            addCowButton.setEnabled(false);
+        }
     }
-    
-    private void deleteHerd() {
-        systemInfoTextArea.setText("System Information: A Herd has been deleted from the Farm.");
+
+    private void displayCowList()
+    {
+        if (selectHerdComboBox.isEnabled())
+        {
+            addCowButton.setEnabled(true);
+            Herd theHerd = herds.get(selectHerdComboBox.getSelectedIndex());
+            cows = new ArrayList<>(maxTCoord.getCows(theHerd));
+            if (cows.size() > 0)
+            {
+                Collections.sort(cows);
+                selectCowList.setListData(cows.toArray());
+                selectCowList.setEnabled(true);
+            }
+            else
+            {
+                selectCowList.setListData(noCows);
+                selectCowList.setEnabled(false);
+                milkTakingButton.setEnabled(false);
+                jTabbedPane1.setEnabledAt(3, false);
+            }
+        }
+        else
+        {
+            selectCowList.setListData(noCows);
+            selectCowList.setEnabled(false);
+            milkTakingButton.setEnabled(false);
+            jTabbedPane1.setEnabledAt(3, false);
+        }
+        displayHerdStatistics();
     }
-    
-    private void deleteFarm() {
-        systemInfoTextArea.setText("System Information: A Farm has been deleted from the system.");
+
+    // </editor-fold>
+     
+//***************************************************************************
+    // The methods in this section are concerned with the Add Farm page
+
+    // <editor-fold defaultstate="collapsed"> 
+
+    private void addFarm() 
+    {
+        farmNameEdit = false;
+        farmLocationEdit = false;
+        farmSaveButton.setEnabled(false);
+        currentFarmList.removeAll();
+        if (farms.size() > 0)
+        {
+            currentFarmList.setListData(farms.toArray());
+        }
+        else
+        {
+            currentFarmList.setListData(noFarms);
+        }
     }
-    
-    private void saveMilkTaking() {
-        systemInfoTextArea.setText("System Information: The milk taking for the cow has been added to the system.");
+
+    private void saveFarm() 
+    {
+        if(maxTCoord.addFarm(farmNameField.getText(), farmLocationField.getText()))
+        {
+            systemInfoTextArea.setText("System Information: A Farm has been added to the system");
+            displayFarmList();
+            addFarm();
+        }
+        else
+        {
+            systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
+        }
+        
     }
-    
-    private void deleteMilkTaking() {
-        systemInfoTextArea.setText("System Information: The milk taking for the cow has been deleted from the system.");
-    }
-    
-    private void resetFarm() {
+
+    private void resetFarm() 
+    {
+        farmNameField.setText("User Input");
+        farmNameEdit = false;
+        farmLocationField.setText("User Input");
+        farmLocationEdit = false;
+        farmSaveButton.setEnabled(false);
         systemInfoTextArea.setText("System Information: Re-enter the Farm details.");
     }
     
-    private void resetHerd() {
+    private void setFarmSaveButton() 
+    {
+        if (farmNameEdit && farmLocationEdit)
+        {
+            farmSaveButton.setEnabled(true);
+        }
+    }
+
+    // </editor-fold>
+
+//******************************************************************************
+    // The methods in this section are concerned with the Add Herd page
+    
+    // <editor-fold defaultstate="collapsed"> 
+    private void addHerd() {
+        
+        herdNameEdit = false;
+        herdSaveButton.setEnabled(false);
+        
+        if (!farms.isEmpty())
+        {
+            currentSelectedFarm.setModel(new DefaultComboBoxModel(farms.toArray()));
+            currentSelectedFarm.setSelectedIndex(selectFarmComboBox.getSelectedIndex());
+            herds = new ArrayList<>(maxTCoord.getHerds(farms.get(currentSelectedFarm.getSelectedIndex())));
+            if (!herds.isEmpty())
+            {
+                currentHerdList.setListData(herds.toArray());
+            }
+            else
+            {
+                currentHerdList.setListData(noHerds);
+            }
+            
+        }
+        else
+        {
+            currentSelectedFarm.setModel(new DefaultComboBoxModel(noFarms));
+            currentHerdList.setListData(noHerds);
+        }
+        
+    }
+    
+    /**
+     * Method to action storing a herd in the system
+     */
+    private void saveHerd() 
+    {
+        //TODO: validate fields or wait for error?
+        if (maxTCoord.addHerd(herdNameField.getText(),
+                milkInterval,
+                farms.get(currentSelectedFarm.getSelectedIndex())))
+        {
+            systemInfoTextArea.setText("System Information: A Herd has been added to the Farm.");
+            addHerd();
+        }
+        else
+        {
+            systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
+        }
+    }
+    
+    /**
+     * 
+     */
+    private void resetHerd() 
+    {
+        herdNameField.setText("User input");
+        herdNameEdit = false;
         eightHourRadioButton.setSelected(false);
         nineHourRadioButton.setSelected(false);
+        herdSaveButton.setEnabled(false);
         systemInfoTextArea.setText("System Information: Re-enter the Herd details.");
     }
     
-    private void resetMilkTaking() {
+    private void selectEightHour() 
+    {
+        if (eightHourRadioButton.isSelected()) {
+            systemInfoTextArea.setText("System Information: 8 and 16 hour milking interval selected.");
+            milkInterval = MilkInterval.EIGHT_16;
+            nineHourRadioButton.setSelected(false);
+        } else {
+            systemInfoTextArea.setText("System Information: Unselected 8 & 16 hour milk interval. " +
+                    "9 & 15 hour interval selected instead");
+            milkInterval = MilkInterval.NINE_15;
+            nineHourRadioButton.setSelected(true);
+        }
+    }
+    
+    private void selectNineHour() 
+    {
+        if (nineHourRadioButton.isSelected()) {
+            systemInfoTextArea.setText("System Information: 9 and 15 hour milking interval selected");
+            milkInterval = MilkInterval.NINE_15;
+            eightHourRadioButton.setSelected(false);
+        } else {
+            systemInfoTextArea.setText("System Information: Unselected 9 & 15 hour milking interval. " +
+                    "8 & 16 hour interval selected instead.");
+            milkInterval = MilkInterval.EIGHT_16;
+            eightHourRadioButton.setSelected(true);
+        }
+    }
+    
+    // </editor-fold>
+    
+//******************************************************************************
+    //The methods in this section are concerned with the Milk Taking Page
+    
+    // <editor-fold defaultstate="collapsed">
+    private void addMilkTaking() 
+    {
+       currentCowList.removeAll();
+       
+       if(!herds.isEmpty())
+       {
+            currentHerdComboBox.setModel(new DefaultComboBoxModel(herds.toArray()));
+            currentHerdComboBox.setSelectedIndex(selectHerdComboBox.getSelectedIndex());
+            cows = new ArrayList<>(maxTCoord.getCows(herds.get(currentHerdComboBox.getSelectedIndex())));
+            if (!cows.isEmpty())
+            {
+                Collections.sort(cows);
+                currentCowList.setListData(cows.toArray());
+            }
+            else
+            {
+                currentCowList.setListData(noCows);
+            }
+       }
+       else
+       {
+           currentHerdComboBox.setModel(new DefaultComboBoxModel(noHerds));
+       }
+       
+       
+       if (!selectCowList.isSelectionEmpty())
+       {
+           Cow theCow = cows.get(selectCowList.getSelectedIndex());
+           milkTakingSaveButton.setEnabled(true);
+           currentCowField.setText(theCow.getCowId());
+           cowMilkIntervalField.setText("Cow "+ theCow.getCowId() + " is milked on " 
+                   + herds.get(currentHerdComboBox.getSelectedIndex()).getHerdInterval());
+           // Add or Update milk Yields?
+           if(theCow.hasValidMilkYield())
+           {
+               milkTakingSaveButton.setText("Update");
+               MilkYield milkYield = theCow.getMilkYield();
+               amMilkYieldSpinner.setValue(milkYield.getAmYield());
+               pmMilkYieldSpinner.setValue(milkYield.getPmYield());
+           }
+           else
+           {
+               milkTakingSaveButton.setText("Add");
+               amMilkYieldSpinner.setValue(7); // get minimum value from datatable
+               pmMilkYieldSpinner.setValue(7); // get minimum value from datatable
+           }
+       }
+       else
+       {
+           systemInfoTextArea.setText("System Information: No cow currently selected to add Milk Yield to.");
+           milkTakingSaveButton.setEnabled(false);
+       }
+    }
+    
+    private void saveMilkTaking() 
+    {
+        Cow theCow = cows.get(selectCowList.getSelectedIndex());
+        if(maxTCoord.addMilkTaking(theCow,
+                    (int)amMilkYieldSpinner.getValue(),
+                    (int)pmMilkYieldSpinner.getValue()))
+        {
+           systemInfoTextArea.setText("System Information: The milk taking for cow " 
+                   + theCow.getCowId() + " has been added to the system."); 
+        }
+        else
+        {
+            systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
+        }
+    }
+    
+    private void deleteMilkTaking() 
+    {
+        systemInfoTextArea.setText("System Information: The milk taking for the cow has been deleted from the system.");
+    }
+    
+    private void resetMilkTaking() 
+    {
         amMilkYieldSpinner.setValue(0);
         pmMilkYieldSpinner.setValue(0);
         systemInfoTextArea.setText("System Information: Re-enter the milk taking values.");
     }
     
-    private void selectEightHour() {
-        if (eightHourRadioButton.isSelected()) {
-            systemInfoTextArea.setText("System Information: 8 and 16 hour milking interval selected.");
-            nineHourRadioButton.setSelected(false);
-        } else {
-            systemInfoTextArea.setText("System Information: Unselected 8 & 16 hour milk interval. " +
-                    "9 & 15 hour interval selected instead");
-            nineHourRadioButton.setSelected(true);
+    // </editor-fold>
+    
+//******************************************************************************
+    //The methods in this section are concerned with the right-sidebar
+    
+    // <editor-fold defaultstate="collapsed">
+    
+    private void addCow() 
+    {
+        if (maxTCoord.addCow(herds.get(selectHerdComboBox.getSelectedIndex()),
+                                farms.get(selectFarmComboBox.getSelectedIndex())))
+        {
+            systemInfoTextArea.setText("System Information: A Cow has been added to the Herd: " +
+                    herds.get(selectHerdComboBox.getSelectedIndex()));
+            displayCowList();
+            if (jTabbedPane1.getSelectedIndex() == 3)
+            {
+                addMilkTaking();
+            }
+        }
+        else
+        {
+            systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
+        }      
+    }
+    
+    private void deleteCow() 
+    {
+        if (maxTCoord.deleteACow(cows.get(selectCowList.getSelectedIndex()),
+                herds.get(selectHerdComboBox.getSelectedIndex())))
+        {
+            systemInfoTextArea.setText("System Information: A Cow has been deleted from the Herd.");
+            displayCowList();
+        }
+        else
+        {
+            systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
         }
     }
     
-    private void selectNineHour() {
-        if (nineHourRadioButton.isSelected()) {
-            systemInfoTextArea.setText("System Information: 9 and 15 hour milking interval selected");
-            eightHourRadioButton.setSelected(false);
-        } else {
-            systemInfoTextArea.setText("System Information: Unselected 9 & 15 hour milking interval. " +
-                    "8 & 16 hour interval selected instead.");
-            eightHourRadioButton.setSelected(true);
+    private void deleteHerd() 
+    {
+        if(maxTCoord.deleteAHerd(herds.get(selectHerdComboBox.getSelectedIndex()),
+                    farms.get(selectFarmComboBox.getSelectedIndex())))
+        {
+            systemInfoTextArea.setText("System Information: A Herd has been deleted from the Farm.");
+            displayHerdList();
+            displayCowList();               
+        }
+        else
+        {
+            systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
         }
     }
+    
+    private void deleteFarm() 
+    {
+        if (maxTCoord.deleteAFarm(farms.get(selectFarmComboBox.getSelectedIndex())))
+        {
+            systemInfoTextArea.setText("System Information: A Farm has been deleted from the system.");
+            displayFarmList();
+            displayHerdList();
+            displayCowList();
+        }
+        else
+        {
+            systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
+        }
+        
+    }
+    
+    // </editor-fold>
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -178,16 +533,31 @@ public class MaxTGUI extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(820, 640));
 
         jTabbedPane1.setPreferredSize(new java.awt.Dimension(690, 460));
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
 
         selectFarmLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         selectFarmLabel.setText("Select A Farm");
 
         selectFarmComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Farm 1", "Farm 2", "Farm 3", "Farm 4" }));
+        selectFarmComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                selectFarmComboBoxItemStateChanged(evt);
+            }
+        });
 
         selectHerdLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         selectHerdLabel.setText("Select A Herd");
 
         selectHerdComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Herd 1", "Herd 2", "Herd 3", "Herd 4" }));
+        selectHerdComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                selectHerdComboBoxItemStateChanged(evt);
+            }
+        });
 
         selectCowLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         selectCowLabel.setText("Select A Cow");
@@ -198,8 +568,13 @@ public class MaxTGUI extends javax.swing.JFrame {
             public Object getElementAt(int i) { return strings[i]; }
         });
         selectCowList.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                selectCowListMouseClicked(evt);
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                selectCowListMousePressed(evt);
+            }
+        });
+        selectCowList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                selectCowListValueChanged(evt);
             }
         });
         selectCowScrollPane.setViewportView(selectCowList);
@@ -278,17 +653,37 @@ public class MaxTGUI extends javax.swing.JFrame {
 
         farmNameField.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         farmNameField.setText("User input");
+        farmNameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                farmNameFieldKeyPressed(evt);
+            }
+        });
 
         farmLocationLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         farmLocationLabel.setText("Location:");
 
         farmLocationField.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         farmLocationField.setText("User input");
+        farmLocationField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                farmLocationFieldKeyPressed(evt);
+            }
+        });
 
         currentFarmList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Farm 1", "Farm 2", "Farm 3", "Farm 4", " " };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
+        });
+        currentFarmList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                currentFarmListMouseClicked(evt);
+            }
+        });
+        currentFarmList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                currentFarmListValueChanged(evt);
+            }
         });
         currentFarmScrollPanel.setViewportView(currentFarmList);
 
@@ -377,6 +772,11 @@ public class MaxTGUI extends javax.swing.JFrame {
 
         herdNameField.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         herdNameField.setText("User input");
+        herdNameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                herdNameFieldKeyPressed(evt);
+            }
+        });
 
         milkingIntervalPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Milking Interval", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
         milkingIntervalPanel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -422,6 +822,16 @@ public class MaxTGUI extends javax.swing.JFrame {
             String[] strings = { "Herd 1", "Herd 2", "Herd 3", "Herd 4" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
+        });
+        currentHerdList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                currentHerdListMouseClicked(evt);
+            }
+        });
+        currentHerdList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                currentHerdListValueChanged(evt);
+            }
         });
         currentHerdPanel.setViewportView(currentHerdList);
 
@@ -517,6 +927,11 @@ public class MaxTGUI extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        currentCowList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                currentCowListValueChanged(evt);
+            }
+        });
         currentCowPanel.setViewportView(currentCowList);
 
         currentCowLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -566,7 +981,6 @@ public class MaxTGUI extends javax.swing.JFrame {
                 .addGap(38, 38, 38))
         );
 
-        milkTakingSaveButton.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
         milkTakingSaveButton.setText("Add/Update");
         milkTakingSaveButton.setPreferredSize(new java.awt.Dimension(85, 60));
         milkTakingSaveButton.addActionListener(new java.awt.event.ActionListener() {
@@ -793,17 +1207,17 @@ public class MaxTGUI extends javax.swing.JFrame {
 
     private void milkTakingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_milkTakingButtonActionPerformed
         // TODO add your handling code here:
-        addMilkTaking();
+        jTabbedPane1.setSelectedIndex(3);
     }//GEN-LAST:event_milkTakingButtonActionPerformed
 
     private void addHerdButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addHerdButtonActionPerformed
         // TODO add your handling code here:
-        addHerd();
+        jTabbedPane1.setSelectedIndex(2);
     }//GEN-LAST:event_addHerdButtonActionPerformed
 
     private void addFarmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFarmButtonActionPerformed
         // TODO add your handling code here:
-        addFarm();
+        jTabbedPane1.setSelectedIndex(1);
     }//GEN-LAST:event_addFarmButtonActionPerformed
 
     private void farmSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_farmSaveButtonActionPerformed
@@ -864,21 +1278,145 @@ public class MaxTGUI extends javax.swing.JFrame {
     private void eightHourRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eightHourRadioButtonActionPerformed
         // TODO add your handling code here:
         selectEightHour();
+        if (herdNameEdit && eightHourRadioButton.isSelected())
+        {
+            herdSaveButton.setEnabled(true);
+        }
     }//GEN-LAST:event_eightHourRadioButtonActionPerformed
 
     private void nineHourRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nineHourRadioButtonActionPerformed
         // TODO add your handling code here:
         selectNineHour();
+        if (herdNameEdit && nineHourRadioButton.isSelected())
+        {
+            herdSaveButton.setEnabled(true);
+        }
     }//GEN-LAST:event_nineHourRadioButtonActionPerformed
 
-    private void selectCowListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectCowListMouseClicked
+    private void selectFarmComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_selectFarmComboBoxItemStateChanged
+        // TODO add your handling code here:
+        displayHerdList();
+        displayCowList();
+    }//GEN-LAST:event_selectFarmComboBoxItemStateChanged
+
+    private void selectHerdComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_selectHerdComboBoxItemStateChanged
+        // TODO add your handling code here:
+        displayCowList();
+    }//GEN-LAST:event_selectHerdComboBoxItemStateChanged
+
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        // TODO add your handling code here:
+        if(maxTCoord != null)
+        {
+            int index = jTabbedPane1.getSelectedIndex();
+            switch(index)
+            {
+                case(0):
+                {
+                    displayFarmList();
+                    displayHerdList();
+                    displayCowList();
+                    break;
+                }
+                case(1):
+                {
+                    addFarm();
+                    break;
+                }
+                case(2):
+                {
+                    addHerd();
+                    break;
+                }
+                case(3):
+                {
+                    addMilkTaking();
+                }
+            }
+        }
+    }//GEN-LAST:event_jTabbedPane1StateChanged
+
+    private void farmNameFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_farmNameFieldKeyPressed
+        // TODO add your handling code here:
+        if (!(evt.getKeyChar()==27||evt.getKeyChar()==65535))
+        {
+            farmNameEdit = true;
+        }
+        setFarmSaveButton();
+    }//GEN-LAST:event_farmNameFieldKeyPressed
+
+    private void farmLocationFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_farmLocationFieldKeyPressed
+        // TODO add your handling code here:
+        if (!(evt.getKeyChar()==27||evt.getKeyChar()==65535))
+        {
+            farmLocationEdit = true;
+        }
+        setFarmSaveButton();
+    }//GEN-LAST:event_farmLocationFieldKeyPressed
+
+    private void herdNameFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_herdNameFieldKeyPressed
+        // TODO add your handling code here:
+        if (!(evt.getKeyChar()==27||evt.getKeyChar()==65535))
+        {
+            herdNameEdit = true;
+        }
+        if (herdNameEdit && (eightHourRadioButton.isSelected() || nineHourRadioButton.isSelected()))
+        {
+            herdSaveButton.setEnabled(true);
+        }
+    }//GEN-LAST:event_herdNameFieldKeyPressed
+
+    private void selectCowListMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectCowListMousePressed
         // TODO add your handling code here:
         // waits for a double click
-        if (evt.getClickCount() == 2) {
+        if (evt.getClickCount() == 2) 
+        {
             systemInfoTextArea.setText("System Information: Double clicked on the list of cows.");
-            addMilkTaking();
+            jTabbedPane1.setSelectedIndex(3);
         }
-    }//GEN-LAST:event_selectCowListMouseClicked
+    }//GEN-LAST:event_selectCowListMousePressed
+
+    private void selectCowListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_selectCowListValueChanged
+        // TODO add your handling code here:
+        jTabbedPane1.setEnabledAt(3, true);
+        milkTakingButton.setEnabled(true);
+    }//GEN-LAST:event_selectCowListValueChanged
+
+    private void currentFarmListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_currentFarmListValueChanged
+        // TODO add your handling code here:
+        selectFarmComboBox.setSelectedIndex(currentFarmList.getSelectedIndex());
+    }//GEN-LAST:event_currentFarmListValueChanged
+
+    private void currentFarmListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_currentFarmListMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2)
+        {
+            jTabbedPane1.setSelectedIndex(2);
+        }
+    }//GEN-LAST:event_currentFarmListMouseClicked
+
+    private void currentHerdListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_currentHerdListValueChanged
+        // TODO add your handling code here:
+        selectHerdComboBox.setSelectedIndex(currentHerdList.getSelectedIndex());
+        if (!herds.isEmpty())
+        {
+            addCowButton.setEnabled(true);
+        }
+    }//GEN-LAST:event_currentHerdListValueChanged
+
+    private void currentHerdListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_currentHerdListMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2)
+        {
+            jTabbedPane1.setSelectedIndex(3);
+        }
+    }//GEN-LAST:event_currentHerdListMouseClicked
+
+    private void currentCowListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_currentCowListValueChanged
+        // TODO add your handling code here:
+        selectCowList.setSelectedIndex(currentCowList.getSelectedIndex());
+        addMilkTaking();
+    }//GEN-LAST:event_currentCowListValueChanged
 
     /**
      * @param args the command line arguments
