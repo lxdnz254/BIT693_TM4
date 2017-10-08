@@ -6,4 +6,4 @@ Working project for Bachelor of IT from Open Polytechnic of NZ. A small java app
 
 ### Class Diagram
 
-[!alt text](CalculateMaxT_Class_Diagram.png "A class diagram of the core system")
+![alt text](CalculateMaxT_Class_Diagram.png "A class diagram of the core system")
