@@ -64,23 +64,17 @@ public class CalculateMaxT {
         maxTTime = new MaxTimeTable();
         
         MilkTable foundMilkT = new MilkTable();
-        System.out.println("milkTables size: " + milkTables.size());
+        
         for (MilkTable milkT: milkTables)
         {
-            
-            System.out.println("Interval: " + milkT.getMilkInterval());
-            System.out.println("Herd Interval: " + aHerd.getHerdInterval());
-            //System.out.println("Rows: " + milkT.getRow(20)[0]);
             if(milkT.getMilkInterval() == aHerd.getHerdInterval())
             {
                 foundMilkT = milkT;
-                System.out.println("Objects match: " + foundMilkT + " -> " + milkT);
             }
         }
-        System.out.println("Herd Average: " + herdMilkAverage(aHerd));
-        System.out.println(foundMilkT.getRow(20)[0]);
+        
         Integer[] times = foundMilkT.getRow(herdMilkAverage(aHerd));
-        System.out.println("Got the am time: " + times[0]);
+        
         return maxTTime.getTime(times[0]);
     }
     

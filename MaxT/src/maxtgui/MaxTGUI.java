@@ -52,11 +52,25 @@ public class MaxTGUI extends javax.swing.JFrame {
     {
         if (selectHerdComboBox.isEnabled() && cows != null) 
         {
-        statisticsTextArea.setText("For the selected Herd: " 
+            Herd theHerd = herds.get(selectHerdComboBox.getSelectedIndex());
+            if(maxTCoord.checkHerd(theHerd) && cows.size() > 0)
+            {
+                statisticsTextArea.setText("For the selected Herd: " 
+                + herds.get(selectHerdComboBox.getSelectedIndex()) + "\r\n\r\n"
+                + "Number of Cows: " + cows.size() + "\r\n\r\n"
+                + "Average Milk Yield: " + maxTCoord.getAverage(theHerd) + "\r\n\r\n"
+                + "MaxT Value - AM milking: " + maxTCoord.getMaxTAmTime(theHerd) + "\r\n"
+                + "               - PM milking: " + maxTCoord.getMaxTPmTime(theHerd));
+            }
+            else
+            {
+                statisticsTextArea.setText("For the selected Herd: " 
                 + herds.get(selectHerdComboBox.getSelectedIndex()) + "\r\n\r\n"
                 + "Number of Cows: " + cows.size() + "\r\n\r\n"
                 + "Average Milk Yield: " + "\r\n\r\n"
                 + "MaxT Value: ");
+            }
+        
         }
         else
         {
@@ -162,6 +176,7 @@ public class MaxTGUI extends javax.swing.JFrame {
         if (farms.size() > 0)
         {
             currentFarmList.setListData(farms.toArray());
+            currentFarmList.setSelectedIndex(selectFarmComboBox.getSelectedIndex());
         }
         else
         {
@@ -221,6 +236,7 @@ public class MaxTGUI extends javax.swing.JFrame {
             if (!herds.isEmpty())
             {
                 currentHerdList.setListData(herds.toArray());
+                currentHerdList.setSelectedIndex(selectHerdComboBox.getSelectedIndex());
             }
             else
             {
@@ -248,6 +264,7 @@ public class MaxTGUI extends javax.swing.JFrame {
         {
             systemInfoTextArea.setText("System Information: A Herd has been added to the Farm.");
             addHerd();
+            displayHerdList();
         }
         else
         {
@@ -315,6 +332,15 @@ public class MaxTGUI extends javax.swing.JFrame {
             {
                 Collections.sort(cows);
                 currentCowList.setListData(cows.toArray());
+                if(!selectCowList.isSelectionEmpty())
+                {
+                    currentCowList.setSelectedIndex(selectCowList.getSelectedIndex());
+                }
+                else
+                {
+                    currentCowList.setSelectedIndex(0);
+                }
+                
             }
             else
             {
@@ -365,6 +391,8 @@ public class MaxTGUI extends javax.swing.JFrame {
         {
            systemInfoTextArea.setText("System Information: The milk taking for cow " 
                    + theCow.getCowId() + " has been added to the system."); 
+           displayHerdStatistics();
+           addMilkTaking();
         }
         else
         {
@@ -375,6 +403,8 @@ public class MaxTGUI extends javax.swing.JFrame {
     private void deleteMilkTaking() 
     {
         systemInfoTextArea.setText("System Information: The milk taking for the cow has been deleted from the system.");
+        displayHerdStatistics();
+        addMilkTaking();
     }
     
     private void resetMilkTaking() 
@@ -412,46 +442,79 @@ public class MaxTGUI extends javax.swing.JFrame {
     
     private void deleteCow() 
     {
-        if (maxTCoord.deleteACow(cows.get(selectCowList.getSelectedIndex()),
+        try
+        {
+            if (maxTCoord.deleteACow(cows.get(selectCowList.getSelectedIndex()),
                 herds.get(selectHerdComboBox.getSelectedIndex())))
-        {
-            systemInfoTextArea.setText("System Information: A Cow has been deleted from the Herd.");
-            displayCowList();
+            {
+                systemInfoTextArea.setText("System Information: A Cow has been deleted from the Herd.");
+                displayCowList();
+                addMilkTaking();
+            }
+            else
+            {
+                systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
+            }
         }
-        else
+        catch(Exception e)
         {
+            maxTCoord.AddErrors("Delete Error: " + e);
             systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
         }
+        
     }
     
     private void deleteHerd() 
     {
-        if(maxTCoord.deleteAHerd(herds.get(selectHerdComboBox.getSelectedIndex()),
+        try
+        {
+            if(maxTCoord.deleteAHerd(herds.get(selectHerdComboBox.getSelectedIndex()),
                     farms.get(selectFarmComboBox.getSelectedIndex())))
-        {
-            systemInfoTextArea.setText("System Information: A Herd has been deleted from the Farm.");
-            displayHerdList();
-            displayCowList();               
+            {
+                systemInfoTextArea.setText("System Information: A Herd has been deleted from the Farm.");
+                displayHerdList();
+                addHerd();
+                displayCowList();
+                addMilkTaking();
+            }
+            else
+            {
+                systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
+            }
         }
-        else
+        catch(Exception e)
         {
+            maxTCoord.AddErrors("Delete Error: " + e);
             systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
         }
+        
     }
     
     private void deleteFarm() 
     {
-        if (maxTCoord.deleteAFarm(farms.get(selectFarmComboBox.getSelectedIndex())))
+        try
         {
-            systemInfoTextArea.setText("System Information: A Farm has been deleted from the system.");
-            displayFarmList();
-            displayHerdList();
-            displayCowList();
+            if (maxTCoord.deleteAFarm(farms.get(selectFarmComboBox.getSelectedIndex())))
+            {
+                systemInfoTextArea.setText("System Information: A Farm has been deleted from the system.");
+                displayFarmList();
+                addFarm();
+                displayHerdList();
+                addHerd();
+                displayCowList();
+                addMilkTaking();
+            }
+            else
+            {
+                systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
+            }
         }
-        else
+        catch(Exception e)
         {
+            maxTCoord.AddErrors("Delete Error: " + e);
             systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
         }
+        
         
     }
     
@@ -927,6 +990,11 @@ public class MaxTGUI extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        currentCowList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                currentCowListMouseClicked(evt);
+            }
+        });
         currentCowList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 currentCowListValueChanged(evt);
@@ -1378,13 +1446,20 @@ public class MaxTGUI extends javax.swing.JFrame {
 
     private void selectCowListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_selectCowListValueChanged
         // TODO add your handling code here:
-        jTabbedPane1.setEnabledAt(3, true);
-        milkTakingButton.setEnabled(true);
+        if (!selectCowList.isSelectionEmpty())
+        {
+            jTabbedPane1.setEnabledAt(3, true);
+            milkTakingButton.setEnabled(true);
+        }
+        
     }//GEN-LAST:event_selectCowListValueChanged
 
     private void currentFarmListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_currentFarmListValueChanged
         // TODO add your handling code here:
-        selectFarmComboBox.setSelectedIndex(currentFarmList.getSelectedIndex());
+        if (!currentFarmList.isSelectionEmpty()) {
+            selectFarmComboBox.setSelectedIndex(currentFarmList.getSelectedIndex());
+        }
+        
     }//GEN-LAST:event_currentFarmListValueChanged
 
     private void currentFarmListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_currentFarmListMouseClicked
@@ -1397,7 +1472,13 @@ public class MaxTGUI extends javax.swing.JFrame {
 
     private void currentHerdListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_currentHerdListValueChanged
         // TODO add your handling code here:
-        selectHerdComboBox.setSelectedIndex(currentHerdList.getSelectedIndex());
+        if(!currentHerdList.isSelectionEmpty())
+        {
+            addMilkTaking();
+            displayHerdList();
+            selectHerdComboBox.setSelectedIndex(currentHerdList.getSelectedIndex());
+        }
+        
         if (!herds.isEmpty())
         {
             addCowButton.setEnabled(true);
@@ -1408,15 +1489,28 @@ public class MaxTGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (evt.getClickCount() == 2)
         {
+            selectHerdComboBox.setSelectedIndex(currentHerdList.getSelectedIndex());
             jTabbedPane1.setSelectedIndex(3);
         }
     }//GEN-LAST:event_currentHerdListMouseClicked
 
     private void currentCowListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_currentCowListValueChanged
         // TODO add your handling code here:
-        selectCowList.setSelectedIndex(currentCowList.getSelectedIndex());
-        addMilkTaking();
+        
+        if (!currentCowList.isSelectionEmpty())
+        {
+            selectCowList.setSelectedIndex(currentCowList.getSelectedIndex()); 
+        }
+     
     }//GEN-LAST:event_currentCowListValueChanged
+
+    private void currentCowListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_currentCowListMouseClicked
+        // TODO add your handling code here:
+        if(evt.getClickCount() == 2){
+            selectCowList.setSelectedIndex(currentCowList.getSelectedIndex());
+            addMilkTaking();
+        }
+    }//GEN-LAST:event_currentCowListMouseClicked
 
     /**
      * @param args the command line arguments

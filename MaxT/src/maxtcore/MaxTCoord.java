@@ -6,7 +6,7 @@
 package maxtcore;
 
 import java.util.*;
-import java.util.function.Consumer;
+
 
 /**
  *
@@ -27,6 +27,7 @@ public class MaxTCoord {
         errors = new ArrayList<>();
         farms = new HashSet();
         calcMaxT = new CalculateMaxT();
+        initialiseMilkTable();
         // Some initial data commented out after testing
         
         // <editor-fold defaultstate="collapsed">
@@ -404,7 +405,7 @@ public class MaxTCoord {
     
     // <editor-fold defaultstate="collapsed">
     
-    private void AddErrors(String e)
+    public void AddErrors(String e)
     {
         errors.add(e);
     }
@@ -514,6 +515,24 @@ public class MaxTCoord {
         }
         
         return getRowTable.getRow(daily);
+    }
+    
+    public void initialiseMilkTable()
+    {
+        addRow(MilkInterval.EIGHT_16, 20, 13, 7);
+        
+        addRow(MilkInterval.EIGHT_16, 21, 14, 7);
+        addRow(MilkInterval.EIGHT_16, 22, 15, 7);
+        addRow(MilkInterval.EIGHT_16, 23, 15, 8);
+        addRow(MilkInterval.EIGHT_16, 24, 16, 8);
+        addRow(MilkInterval.EIGHT_16, 25, 17, 8);
+        addRow(MilkInterval.NINE_15, 20, 12, 8);
+        addRow(MilkInterval.NINE_15, 21, 13, 8);
+        addRow(MilkInterval.NINE_15, 22, 14, 8);
+        addRow(MilkInterval.NINE_15, 23, 14, 9);
+        addRow(MilkInterval.NINE_15, 24, 15, 9);
+        addRow(MilkInterval.NINE_15, 25, 16, 9);
+                
     }
     //</editor-fold>
 }

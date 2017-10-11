@@ -28,6 +28,7 @@ public class MaxTimeTable
             timeTable.put(14, "07:57");
             timeTable.put(15, "08:21");
             timeTable.put(16, "08:44");
+            timeTable.put(17, "09:13");
         }
         
         String getTime(Integer value)

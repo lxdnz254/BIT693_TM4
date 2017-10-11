@@ -90,8 +90,6 @@ public class CalculateMaxTTest {
     @Test
     public void testHerdMilkAverage() {
         System.out.println("herdMilkAverage");
-        System.out.println("Herd size: " + aHerd.getCows().size());
-        //Herd testHerd = aHerd;
         CalculateMaxT instance = new CalculateMaxT();
         int expResult = 20;
         int result = instance.herdMilkAverage(aHerd);
