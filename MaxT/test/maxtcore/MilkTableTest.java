@@ -5,13 +5,15 @@
  */
 package maxtcore;
 
+import maxtcore.MilkClasses.MilkInterval;
+import maxtcore.MilkClasses.MilkTable;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static maxtcore.MilkInterval.*;
+import static maxtcore.MilkClasses.MilkInterval.*;
 import java.util.*;
 
 /**

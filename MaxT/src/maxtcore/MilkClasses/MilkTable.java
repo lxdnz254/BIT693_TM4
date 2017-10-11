@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package maxtcore;
+package maxtcore.MilkClasses;
 
 import java.util.*;
 
@@ -39,18 +39,18 @@ public class MilkTable {
         dailyMap = new HashMap<>();
     }
 
-    void populateRow(Integer daily, Integer am, Integer pm)
+    public void populateRow(Integer daily, Integer am, Integer pm)
     {
         yieldArray = new Integer[]{am,pm};
         dailyMap.put(daily, yieldArray);
     }
 
-    Integer[] getRow(int dailyRow)
+    public Integer[] getRow(int dailyRow)
     {
         return dailyMap.get(dailyRow);
     }
 
-    MilkInterval getMilkInterval()
+    public MilkInterval getMilkInterval()
     {
         return this.milkInterval;
     }

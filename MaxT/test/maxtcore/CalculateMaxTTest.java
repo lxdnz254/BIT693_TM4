@@ -5,6 +5,11 @@
  */
 package maxtcore;
 
+import maxtcore.FarmClasses.Farm;
+import maxtcore.FarmClasses.Cow;
+import maxtcore.FarmClasses.Herd;
+import maxtcore.MilkClasses.MilkTable;
+import maxtcore.MilkClasses.MilkYield;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import org.junit.After;
@@ -13,7 +18,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static maxtcore.MilkInterval.*;
+import static maxtcore.MilkClasses.MilkInterval.*;
 
 /**
  *

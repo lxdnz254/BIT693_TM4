@@ -5,8 +5,10 @@
  */
 package Testing.Package;
 
+import maxtcore.FarmClasses.Farm;
+import maxtcore.FarmClasses.Herd;
 import maxtcore.*;
-import static maxtcore.MilkInterval.*;
+import static maxtcore.MilkClasses.MilkInterval.*;
 import java.util.*;
 import org.junit.*;
 import static org.junit.Assert.*;

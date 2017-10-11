@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package maxtcore;
+package maxtcore.FarmClasses;
 
+import maxtcore.MilkClasses.MilkYield;
 import java.util.*;
 /**
  *
@@ -72,11 +73,11 @@ public class Cow implements Comparable<Cow>{
     }
     
     
-    void setValidMilkYield(boolean b) {
+    public void setValidMilkYield(boolean b) {
         this.hasValidMilkYield = b;
     }
     
-    void addCowToHerd(Herd aHerd)
+    public void addCowToHerd(Herd aHerd)
     {
         aHerd.addCow(this);
     }

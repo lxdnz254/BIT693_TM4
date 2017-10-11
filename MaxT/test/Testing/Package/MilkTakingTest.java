@@ -5,6 +5,7 @@
  */
 package Testing.Package;
 
+import maxtcore.MilkClasses.MilkYield;
 import maxtcore.*;
 import org.junit.*;
 import static org.junit.Assert.*;

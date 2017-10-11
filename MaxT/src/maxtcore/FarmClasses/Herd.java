@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package maxtcore;
+package maxtcore.FarmClasses;
 
+import maxtcore.MilkClasses.MilkInterval;
 import java.util.*;
 
 /**
@@ -74,7 +75,7 @@ public class Herd implements Comparable<Herd>{
         return cows;
     }
     
-    void addCow(Cow aCow)
+    public void addCow(Cow aCow)
     {
         cows.add(aCow);
     }

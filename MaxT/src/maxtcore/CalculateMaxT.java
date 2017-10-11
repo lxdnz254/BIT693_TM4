@@ -5,6 +5,12 @@
  */
 package maxtcore;
 
+import maxtcore.FarmClasses.Herd;
+import maxtcore.FarmClasses.Cow;
+import maxtcore.MilkClasses.MaxTimeTable;
+import maxtcore.MilkClasses.MilkYield;
+import maxtcore.MilkClasses.MilkInterval;
+import maxtcore.MilkClasses.MilkTable;
 import java.util.*;
 
 /**

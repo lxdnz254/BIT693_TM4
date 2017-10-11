@@ -5,6 +5,12 @@
  */
 package maxtcore;
 
+import maxtcore.FarmClasses.Herd;
+import maxtcore.FarmClasses.Cow;
+import maxtcore.FarmClasses.Farm;
+import maxtcore.MilkClasses.MilkYield;
+import maxtcore.MilkClasses.MilkInterval;
+import maxtcore.MilkClasses.MilkTable;
 import java.util.*;
 
 
@@ -17,7 +23,7 @@ public class MaxTCoord {
     private Collection<Farm> farms;
     private MilkInterval milkInterval;
     private ArrayList<String> errors;
-    private CalculateMaxT calcMaxT;
+    public CalculateMaxT calcMaxT;
     
     /**
      * The main coordinating class for the maxtcore system

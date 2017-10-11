@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package maxtcore;
+package maxtcore.MilkClasses;
 
 import java.util.*;
 
@@ -31,7 +31,7 @@ public class MaxTimeTable
             timeTable.put(17, "09:13");
         }
         
-        String getTime(Integer value)
+        public String getTime(Integer value)
         {
             return timeTable.get(value);
         }

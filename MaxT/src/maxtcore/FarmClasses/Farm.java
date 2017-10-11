@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package maxtcore;
+package maxtcore.FarmClasses;
 
 import java.util.*;
 
@@ -80,7 +80,7 @@ public class Farm implements Comparable<Farm>{
         return herds;
     }
     
-    void addHerd(Herd aHerd) {
+    public void addHerd(Herd aHerd) {
         herds.add(aHerd);
     }
     
