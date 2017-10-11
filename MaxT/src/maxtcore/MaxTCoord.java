@@ -17,6 +17,7 @@ public class MaxTCoord {
     private Collection<Farm> farms;
     private MilkInterval milkInterval;
     private ArrayList<String> errors;
+    private CalculateMaxT calcMaxT;
     
     /**
      * The main coordinating class for the maxtcore system
@@ -25,7 +26,7 @@ public class MaxTCoord {
     {
         errors = new ArrayList<>();
         farms = new HashSet();
-        
+        calcMaxT = new CalculateMaxT();
         // Some initial data commented out after testing
         
         // <editor-fold defaultstate="collapsed">
@@ -427,4 +428,92 @@ public class MaxTCoord {
     }
     
     // </editor-fold>
+    
+//******************************************************************************
+    /* This section deals with getting the calculated times and populating the
+        tables stored in the core system
+    */
+    
+    //<editor-fold defaultstate="collapsed">
+    
+    /**
+     * Checks if the Herd objects associated Cow objects all have valid MilkYields
+     * @param aHerd
+     * @return 
+     */
+    public boolean checkHerd(Herd aHerd)
+    {
+        return calcMaxT.allCowsHaveMilk(aHerd);
+    }
+    
+    /**
+     * Returns the average for a Herd
+     * @param aHerd
+     * @return 
+     */
+    public int getAverage(Herd aHerd)
+    {
+        return calcMaxT.herdMilkAverage(aHerd);
+    }
+    
+    /**
+     * 
+     * @param aHerd
+     * @return 
+     */
+    public String getMaxTAmTime(Herd aHerd)
+    {
+        return calcMaxT.amMaxTTime(aHerd);
+    }
+    
+    /**
+     * 
+     * @param aHerd
+     * @return 
+     */
+    public String getMaxTPmTime(Herd aHerd)
+    {
+        return calcMaxT.pmMaxTTime(aHerd);
+    }
+    
+    /**
+     * 
+     * @param interval
+     * @param daily
+     * @param am
+     * @param pm 
+     */
+    public void addRow(MilkInterval interval, int daily, int am, int pm)
+    {
+        MilkTable addRowTable = new MilkTable(); 
+        for (MilkTable table: calcMaxT.getMilkTables())
+        {
+            if(interval == table.getMilkInterval())
+            {
+                addRowTable = table;
+            }
+        }
+        addRowTable.populateRow(daily, am, pm);
+    }
+    
+    /**
+     * 
+     * @param interval
+     * @param daily
+     * @return 
+     */
+    public Integer[] getRow(MilkInterval interval, int daily)
+    {
+        MilkTable getRowTable = new MilkTable();
+        for (MilkTable table: calcMaxT.getMilkTables())
+        {
+            if(interval == table.getMilkInterval())
+            {
+                getRowTable = table;
+            }
+        }
+        
+        return getRowTable.getRow(daily);
+    }
+    //</editor-fold>
 }
