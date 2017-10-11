@@ -579,6 +579,9 @@
                   </StringArray>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="currentSelectedFarmItemStateChanged"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="herdNameLabel">
               <Properties>
@@ -831,6 +834,9 @@
                   </StringArray>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="currentHerdComboBoxItemStateChanged"/>
+              </Events>
             </Component>
             <Container class="javax.swing.JScrollPane" name="currentCowPanel">
               <AuxValues>

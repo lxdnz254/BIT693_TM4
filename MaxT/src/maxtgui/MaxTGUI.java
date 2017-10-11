@@ -327,25 +327,7 @@ public class MaxTGUI extends javax.swing.JFrame {
        {
             currentHerdComboBox.setModel(new DefaultComboBoxModel(herds.toArray()));
             currentHerdComboBox.setSelectedIndex(selectHerdComboBox.getSelectedIndex());
-            cows = new ArrayList<>(maxTCoord.getCows(herds.get(currentHerdComboBox.getSelectedIndex())));
-            if (!cows.isEmpty())
-            {
-                Collections.sort(cows);
-                currentCowList.setListData(cows.toArray());
-                if(!selectCowList.isSelectionEmpty())
-                {
-                    currentCowList.setSelectedIndex(selectCowList.getSelectedIndex());
-                }
-                else
-                {
-                    currentCowList.setSelectedIndex(0);
-                }
-                
-            }
-            else
-            {
-                currentCowList.setListData(noCows);
-            }
+            getCurrentCowList();
        }
        else
        {
@@ -380,6 +362,28 @@ public class MaxTGUI extends javax.swing.JFrame {
            systemInfoTextArea.setText("System Information: No cow currently selected to add Milk Yield to.");
            milkTakingSaveButton.setEnabled(false);
        }
+    }
+
+    private void getCurrentCowList() {
+        cows = new ArrayList<>(maxTCoord.getCows(herds.get(currentHerdComboBox.getSelectedIndex())));
+        if (!cows.isEmpty())
+        {
+            Collections.sort(cows);
+            currentCowList.setListData(cows.toArray());
+            if(!selectCowList.isSelectionEmpty())
+            {
+                currentCowList.setSelectedIndex(selectCowList.getSelectedIndex());
+            }
+            else
+            {
+                currentCowList.setSelectedIndex(0);
+            }
+            
+        }
+        else
+        {
+            currentCowList.setListData(noCows);
+        }
     }
     
     private void saveMilkTaking() 
@@ -829,6 +833,11 @@ public class MaxTGUI extends javax.swing.JFrame {
         addHerdLabel.setText("Complete the Herd information");
 
         currentSelectedFarm.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Farm 1", "Farm 2", "Farm 3", "Farm 4" }));
+        currentSelectedFarm.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                currentSelectedFarmItemStateChanged(evt);
+            }
+        });
 
         herdNameLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         herdNameLabel.setText("Herd Name:");
@@ -984,6 +993,11 @@ public class MaxTGUI extends javax.swing.JFrame {
         currentCowField.setText("cowID");
 
         currentHerdComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Herd 1", "Herd 2", "Herd 3", "Herd 4" }));
+        currentHerdComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                currentHerdComboBoxItemStateChanged(evt);
+            }
+        });
 
         currentCowList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "1001", "1002", "1003", "1004", "1005" };
@@ -1511,6 +1525,17 @@ public class MaxTGUI extends javax.swing.JFrame {
             addMilkTaking();
         }
     }//GEN-LAST:event_currentCowListMouseClicked
+
+    private void currentHerdComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_currentHerdComboBoxItemStateChanged
+        // TODO add your handling code here:
+        selectHerdComboBox.setSelectedIndex(currentHerdComboBox.getSelectedIndex());
+        getCurrentCowList();
+    }//GEN-LAST:event_currentHerdComboBoxItemStateChanged
+
+    private void currentSelectedFarmItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_currentSelectedFarmItemStateChanged
+        // TODO add your handling code here:
+        selectFarmComboBox.setSelectedIndex(currentSelectedFarm.getSelectedIndex());
+    }//GEN-LAST:event_currentSelectedFarmItemStateChanged
 
     /**
      * @param args the command line arguments

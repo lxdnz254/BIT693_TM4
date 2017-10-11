@@ -110,16 +110,25 @@ public class MaxTCoord {
     {
         try
         {
+            if (name.trim().isEmpty() || name.trim().matches("[a-zA-Z0-9 ]"))
+            {
+                AddErrors("Farm not saved, Farm name is empty");
+                return false;
+            }
+            if (location.trim().isEmpty() || location.trim().equals("[a-zA-Z0-9 ]"))
+            {
+                AddErrors("Farm not saved, Farm location is empty");
+            }
             // put a validation for equal farm names here
             for (Farm checkFarm: farms)
             {
-                if (checkFarm.getFarmName().equals(name))
+                if (checkFarm.getFarmName().equals(name.trim()))
                 {
                     AddErrors("Farm not saved, Farm name matches another.");
                     return false;
                 }
             }
-            Farm farm = new Farm(name, location);
+            Farm farm = new Farm(name.trim(), location);
             farms.add(farm);
             return true;
         }
@@ -143,17 +152,22 @@ public class MaxTCoord {
     {
         try
         {
+            if (name.trim().isEmpty() || name.trim().matches("[^a-zA-Z0-9]"))
+            {
+                AddErrors("Herd not saved, Herd name is empty or contains special charcters");
+                return false;
+            }
             // put a validation for equal names here
             for (Herd checkHerd : getHerds(aFarm))
             {
-                if (checkHerd.getHerdName().equals(name))
+                if (checkHerd.getHerdName().equals(name.trim()))
                 {
                     AddErrors("Herd not saved, a herd matching this name on "+ aFarm 
                             + " already exists.");
                     return false;
                 }
             }
-            Herd herd = new Herd(name, interval);
+            Herd herd = new Herd(name.trim(), interval);
             aFarm.addHerd(herd);
             return true;
         }
