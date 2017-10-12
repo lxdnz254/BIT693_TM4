@@ -232,7 +232,19 @@ public class MaxTCoord {
     {
         try
         {
-            // Get the MilkYiled object associated with aCow
+            // check for negative values
+            if (am < 0 || pm < 0 )
+            {
+                AddErrors("Milk Yield not saved, at least one milk taking value was negative.");
+                return false;
+            }
+            // check for excessive values
+            if (am + pm > 30) 
+            {
+                AddErrors("Milk Yield is excessive for the Cow, please check your figures.");
+                return false;
+            }
+            // Get the MilkYield object associated with aCow
             MilkYield milkYield = aCow.getMilkYield();
             milkYield.setYield(am, pm);
             aCow.setValidMilkYield(true);
