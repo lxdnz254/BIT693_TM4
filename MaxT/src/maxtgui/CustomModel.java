@@ -6,6 +6,7 @@
 package maxtgui;
 
 import java.util.*;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import maxtcore.MilkClasses.MilkTable;
@@ -14,35 +15,119 @@ import maxtcore.MilkClasses.MilkTable;
  *
  * @author acer
  */
-public class CustomModel {
+public class CustomModel extends AbstractTableModel{
     
-    TableModel tableModel;
-    List<String> columns;
-    List<Integer[]> rows;
+    private final Object[] columns = {"Daily Yeild", "8 & 16 am", "8 & 16 pm", "9 & 15 am", "9 & 15 pm"};
+    ArrayList<Integer[]> data;
     CustomClass customC;
     Integer[][] table;
     
-    public CustomModel()
-    {
-        customC = new CustomClass();
-        columns = new ArrayList<>();
-        columns.add("Daily Milk Yield");
-        columns.add("8 & 16 morning");
-        columns.add("8 & 16 evening");
-        columns.add("9 & 15 morning");
-        columns.add("9 & 15 evening");
-        rows = new ArrayList<>();
-        table = customC.getTable();
-        for (int i=0;i<6;i++)
+   
+
+    public CustomModel() {
+    this.data = getDataForDropList();
+}
+
+    @Override
+    public int getRowCount() {
+    return data.size();
+}
+
+@Override
+public int getColumnCount() {
+return columns.length;
+}
+
+@Override
+public String getColumnName(int columnIndex) {
+    return (String) columns[columnIndex];
+}
+
+@Override
+public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+    // Set Values here;
+    Integer theValue = (Integer)aValue;
+    if (theValue >= 7 && theValue <= 17){
+        table[rowIndex][columnIndex] = theValue;
+        switch(columnIndex)
         {
-            rows.add(new Integer[] {table[i][0], table[i][1],table[i][2],table[i][3],table[i][4]});
+            case 1:{
+                if((theValue + table[rowIndex][2])!= table[rowIndex][0])
+                {
+                    table[rowIndex][2] = table[rowIndex][0] - theValue;
+                    if(table[rowIndex][2]< 7){
+                        setValueAt(7, rowIndex, 2);
+                    }
+                } 
+                break;
+            }
+            case 2:{
+                if((theValue + table[rowIndex][1]) != table[rowIndex][0])
+                {
+                    table[rowIndex][1] = table[rowIndex][0] - theValue;
+                    if(table[rowIndex][1] < 7){
+                        setValueAt(7, rowIndex, 1);
+                    }
+                }
+                break;
+            }
+            case 3:{
+                if((theValue + table[rowIndex][4]) != table[rowIndex][0])
+                {
+                    table[rowIndex][4] = table[rowIndex][0] - theValue;
+                    if(table[rowIndex][4] < 7) {
+                        setValueAt(7, rowIndex, 4);
+                    }
+                }
+                break;
+            }
+            case 4:{
+                if((theValue + table[rowIndex][3]) != table[rowIndex][0])
+                {
+                    table[rowIndex][3] = table[rowIndex][0] - theValue;
+                    if(table[rowIndex][3] < 7){
+                        setValueAt(7, rowIndex, 3);
+                    }
+                }
+            }
         }
+    } 
+}
+
+@Override
+public Object getValueAt(int rowIndex, int columnIndex) {
+return data.get(rowIndex)[columnIndex];
+}
+
+@Override
+public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return !(columnIndex == 0);
+}
+
+@Override
+public Class<?> getColumnClass(int columnIndex) {
+    // Depending on the type of the column. Return data type;
+    return getValueAt(1, columnIndex).getClass();
+}
+
+
+/**
+ * Populate the data from here.
+ * @return ArrayList<Integer[]>
+ */
+private ArrayList<Integer[]> getDataForDropList() {
+    ArrayList<Integer[]> modelList = new  ArrayList<>();
+    customC = new CustomClass();
+    table = customC.getTable();
+    for(int i = 0; i< 6; i++) {
+
+    // Create custom Object and add them to the LinkedHashSet.
+       
         
-        tableModel = new DefaultTableModel(rows.toArray(new Object[][]{}), columns.toArray());
+            // Create a CustomClass object and add it to the LinkedHashSet
+             modelList.add(table[i]);
     }
-    
-    public TableModel getTableModel()
-    {
-        return tableModel;
-    }
+           // Finally return the llinkedhashset
+    return modelList;
+}
 }

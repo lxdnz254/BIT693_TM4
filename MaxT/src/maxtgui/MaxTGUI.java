@@ -31,6 +31,7 @@ public class MaxTGUI extends javax.swing.JFrame {
     private boolean farmNameEdit;
     private boolean farmLocationEdit;
     private boolean herdNameEdit;
+    private boolean tableClosing;
     // Error reporters
     final String[] noHerds = {"No herds currently available"};
     final String[] noFarms = {"No farms currently available"};
@@ -45,6 +46,7 @@ public class MaxTGUI extends javax.swing.JFrame {
                 "which will be displayed in this area.");
         maxTCoord = new MaxTCoord();
         TableDialog.setVisible(false);
+        tableClosing = false;
         displayFarmList();
         displayHerdList();
         displayCowList();
@@ -531,8 +533,29 @@ public class MaxTGUI extends javax.swing.JFrame {
     // </editor-fold>
 
 //******************************************************************************
-    // The methods in this section are concerned with populating the milk Values Table
+    // The methods in this section are concerned with storing the milk Values Table
+    // to the core system.
     
+    //<editor-fold defaultstate="collapsed">
+    
+    private void storeData()
+    {
+       System.out.println("Storing data");
+       int rowLength = milkValuesTable.getModel().getRowCount();
+       int columnLength = milkValuesTable.getModel().getColumnCount();
+       for (int i=0; i< rowLength; i++)
+       {
+           Integer[] array = new Integer[columnLength];
+           for(int j=0; j < columnLength; j++){
+               array[j] = (Integer)milkValuesTable.getModel().getValueAt(i, j);
+           }
+           maxTCoord.addRow(MilkInterval.EIGHT_16, array[0], array[1], array[2]);
+           maxTCoord.addRow(MilkInterval.NINE_15, array[0], array[3], array[4]);
+       }
+       System.out.println("Data stored");
+    }
+    
+    //</editor-fold>
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -544,9 +567,12 @@ public class MaxTGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         TableDialog = new javax.swing.JDialog();
-        TablePane = new javax.swing.JPanel();
-        TableScrollPane = new javax.swing.JScrollPane();
+        tablePane = new javax.swing.JPanel();
+        tableScrollPane = new javax.swing.JScrollPane();
         milkValuesTable = new javax.swing.JTable();
+        tableTextPane = new javax.swing.JScrollPane();
+        tableTextArea = new javax.swing.JTextArea();
+        saveTableButton = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         mainScreenPanel = new javax.swing.JPanel();
         selectFarmLabel = new javax.swing.JLabel();
@@ -611,34 +637,78 @@ public class MaxTGUI extends javax.swing.JFrame {
         deleteFarmButton = new javax.swing.JButton();
 
         TableDialog.setTitle("Daily Milk Yield Values");
-        TableDialog.setPreferredSize(new java.awt.Dimension(600, 300));
-        TableDialog.setSize(new java.awt.Dimension(400, 300));
+        TableDialog.setPreferredSize(new java.awt.Dimension(600, 600));
+        TableDialog.setSize(new java.awt.Dimension(600, 600));
+        TableDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                TableDialogWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                TableDialogWindowClosing(evt);
+            }
+        });
 
-        milkValuesTable.setModel(new CustomModel().getTableModel());
-        milkValuesTable.setColumnSelectionAllowed(true);
+        tablePane.setPreferredSize(new java.awt.Dimension(500, 500));
+
+        milkValuesTable.setAutoCreateRowSorter(true);
+        milkValuesTable.setModel(new CustomModel());
+        milkValuesTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        milkValuesTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         milkValuesTable.getTableHeader().setReorderingAllowed(false);
-        TableScrollPane.setViewportView(milkValuesTable);
+        tableScrollPane.setViewportView(milkValuesTable);
         milkValuesTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-        javax.swing.GroupLayout TablePaneLayout = new javax.swing.GroupLayout(TablePane);
-        TablePane.setLayout(TablePaneLayout);
-        TablePaneLayout.setHorizontalGroup(
-            TablePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-            .addGroup(TablePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(TablePaneLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(TableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+        tableTextArea.setColumns(20);
+        tableTextArea.setRows(5);
+        tableTextArea.setText("Edited data will be saved to the\nsystem on exiting.");
+        tableTextPane.setViewportView(tableTextArea);
+
+        saveTableButton.setText("Save & Exit");
+        saveTableButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveTableButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout tablePaneLayout = new javax.swing.GroupLayout(tablePane);
+        tablePane.setLayout(tablePaneLayout);
+        tablePaneLayout.setHorizontalGroup(
+            tablePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 600, Short.MAX_VALUE)
+            .addGroup(tablePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePaneLayout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(tablePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(tablePaneLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(tableTextPane, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(281, Short.MAX_VALUE)))
+            .addGroup(tablePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePaneLayout.createSequentialGroup()
+                    .addContainerGap(473, Short.MAX_VALUE)
+                    .addComponent(saveTableButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
         );
-        TablePaneLayout.setVerticalGroup(
-            TablePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-            .addGroup(TablePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(TablePaneLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(TableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+        tablePaneLayout.setVerticalGroup(
+            tablePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 600, Short.MAX_VALUE)
+            .addGroup(tablePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePaneLayout.createSequentialGroup()
+                    .addContainerGap(110, Short.MAX_VALUE)
+                    .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(240, Short.MAX_VALUE)))
+            .addGroup(tablePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePaneLayout.createSequentialGroup()
+                    .addContainerGap(493, Short.MAX_VALUE)
+                    .addComponent(tableTextPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
+            .addGroup(tablePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePaneLayout.createSequentialGroup()
+                    .addContainerGap(489, Short.MAX_VALUE)
+                    .addComponent(saveTableButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
         );
 
         javax.swing.GroupLayout TableDialogLayout = new javax.swing.GroupLayout(TableDialog.getContentPane());
@@ -649,7 +719,7 @@ public class MaxTGUI extends javax.swing.JFrame {
             .addGroup(TableDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(TableDialogLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(TablePane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tablePane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
         TableDialogLayout.setVerticalGroup(
@@ -658,7 +728,7 @@ public class MaxTGUI extends javax.swing.JFrame {
             .addGroup(TableDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(TableDialogLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(TablePane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tablePane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
@@ -1615,7 +1685,28 @@ public class MaxTGUI extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         TableDialog.setVisible(true);
+        tableClosing = false;
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void saveTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTableButtonActionPerformed
+        // TODO add your handling code here:
+        storeData();
+        tableClosing = true;
+        TableDialog.dispose();
+    }//GEN-LAST:event_saveTableButtonActionPerformed
+
+    private void TableDialogWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_TableDialogWindowClosing
+        // TODO add your handling code here:
+        if (!tableClosing){storeData();}
+        
+    }//GEN-LAST:event_TableDialogWindowClosing
+
+    private void TableDialogWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_TableDialogWindowClosed
+        // TODO add your handling code here:
+        displayFarmList();
+        displayHerdList();
+        displayCowList();
+    }//GEN-LAST:event_TableDialogWindowClosed
 
     /**
      * @param args the command line arguments
@@ -1654,8 +1745,6 @@ public class MaxTGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog TableDialog;
-    private javax.swing.JPanel TablePane;
-    private javax.swing.JScrollPane TableScrollPane;
     private javax.swing.JButton addCowButton;
     private javax.swing.JButton addFarmButton;
     private javax.swing.JLabel addFarmLabel;
@@ -1708,6 +1797,7 @@ public class MaxTGUI extends javax.swing.JFrame {
     private javax.swing.JRadioButton nineHourRadioButton;
     private javax.swing.JLabel pmMilkYieldLabel;
     private javax.swing.JSpinner pmMilkYieldSpinner;
+    private javax.swing.JButton saveTableButton;
     private javax.swing.JLabel selectCowLabel;
     private javax.swing.JList selectCowList;
     private javax.swing.JScrollPane selectCowScrollPane;
@@ -1719,5 +1809,9 @@ public class MaxTGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane statisticsScrollPane;
     private javax.swing.JTextArea statisticsTextArea;
     private javax.swing.JTextArea systemInfoTextArea;
+    private javax.swing.JPanel tablePane;
+    private javax.swing.JScrollPane tableScrollPane;
+    private javax.swing.JTextArea tableTextArea;
+    private javax.swing.JScrollPane tableTextPane;
     // End of variables declaration//GEN-END:variables
 }

@@ -7,6 +7,7 @@ package maxtgui;
 
 import java.util.*;
 import maxtcore.MaxTCoord;
+import maxtcore.MilkClasses.MilkInterval;
 import maxtcore.MilkClasses.MilkTable;
 
 /**
@@ -39,10 +40,24 @@ public class CustomClass {
     Integer[][] populateTables(ArrayList<MilkTable> collection)
     {
         Integer[][] table = new Integer[6][5];
+        MilkTable table8 = new MilkTable();
+        MilkTable table9 = new MilkTable();
+        for (MilkTable checkTable: collection)
+        {
+            if (checkTable.getMilkInterval() == MilkInterval.EIGHT_16)
+            {
+                table8 = checkTable;
+            }
+            if (checkTable.getMilkInterval() == MilkInterval.NINE_15)
+            {
+                table9 = checkTable;
+            }
+        }
+        
         for (int i = 20; i<=25; i++)
         {
-        milkMap1.put(i, collection.get(0).getRow(i));
-        milkMap2.put(i, collection.get(1).getRow(i));
+        milkMap1.put(i, table8.getRow(i));
+        milkMap2.put(i, table9.getRow(i));
         table[i-20][0] = i;
         table[i-20][1] = milkMap1.get(i)[0];
         table[i-20][2] = milkMap1.get(i)[1];
