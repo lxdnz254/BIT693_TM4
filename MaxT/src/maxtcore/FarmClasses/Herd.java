@@ -44,7 +44,7 @@ public class Herd implements Comparable<Herd>{
     
     /**
      * Returns the Herd objects unique identifier
-     * @return
+     * @return String of the ident variable.
      */
     public String getHerdId()
     {
@@ -53,7 +53,7 @@ public class Herd implements Comparable<Herd>{
     
     /**
      * Returns the Herd objects name
-     * @return
+     * @return String of the herd name.
      */
     public String getHerdName()
     {
@@ -62,7 +62,7 @@ public class Herd implements Comparable<Herd>{
     
     /**
      * Returns the MilkInterval a Herd object has
-     * @return
+     * @return the milk interval of the Herd object.
      */
     public MilkInterval getHerdInterval()
     {
@@ -71,7 +71,7 @@ public class Herd implements Comparable<Herd>{
     
     /**
      * Returns the Collection of Cow objects associated with the Herd object.
-     * @return
+     * @return a collection of Cow objects
      */
     public Collection<Cow> getCows()
     {
@@ -89,7 +89,7 @@ public class Herd implements Comparable<Herd>{
     
     /**
      * Adds the Herd object to a Farm objects Collection of Herd objects
-     * @param aFarm
+     * @param aFarm the Farm object to add a Herd object to.
      */
     public void addHerdToFarm(Farm aFarm) {
         aFarm.addHerd(this);

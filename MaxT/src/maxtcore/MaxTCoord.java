@@ -78,7 +78,7 @@ public class MaxTCoord {
     
     /**
      * Gets the Collection of Farm objects stored in the coordinating object
-     * @return
+     * @return a collection of Farm objects.
      */
     public Collection<Farm> getFarms()
     {
@@ -87,8 +87,8 @@ public class MaxTCoord {
     
     /**
      * Gets the Collection of Herd objects associated with a Farm object
-     * @param aFarm
-     * @return
+     * @param aFarm the Farm object to get the collection of Herd objects from
+     * @return a collection of Herd objects.
      */
     public Collection<Herd> getHerds(Farm aFarm)
     {
@@ -97,8 +97,8 @@ public class MaxTCoord {
  
     /**
      * Returns a Collection of Cow objects associated with a Herd object
-     * @param aHerd
-     * @return
+     * @param aHerd the Herd object to return a collection of Cow objects from
+     * @return a collection of Cow objects
      */
     public Collection<Cow> getCows(Herd aHerd)
     {
@@ -115,7 +115,7 @@ public class MaxTCoord {
      * error report and returns false.
      * @param name A String identifying the name of the Farm object
      * @param location A String identifying the location of the Farm object
-     * @return
+     * @return true or false
      */
     public boolean addFarm(String name, String location)
     {
@@ -161,7 +161,7 @@ public class MaxTCoord {
      * @param name a String identifying the name of the Herd object
      * @param interval A MilkInterval object
      * @param aFarm The Farm object the Herd will be associated with.
-     * @return
+     * @return true or false
      */
     public boolean addHerd(String name, MilkInterval interval, Farm aFarm)
     {
@@ -201,7 +201,7 @@ public class MaxTCoord {
      * @param aHerd The Herd object the Cow will be associated with.
      * @param aFarm The Farm object the Herd is associated with, used to create
      *              Cows unique identifier.
-     * @return
+     * @return true or false
      */
     public boolean addCow(Herd aHerd, Farm aFarm)
     {
@@ -226,7 +226,7 @@ public class MaxTCoord {
      * @param aCow The Cow object the milk Yield is being added/updated to.
      * @param am an integer representing the morning milk volume
      * @param pm an integer representing the evening milk volume
-     * @return 
+     * @return true or false
      */
     public boolean addMilkYield(Cow aCow, int am, int pm)
     {
@@ -266,7 +266,7 @@ public class MaxTCoord {
     
     /**
      * Deletes the MilkYield object values held by a Cow object
-     * @param aCow
+     * @param aCow the Cow object the MilkYiled needs removing from.
      * @return true or false that the deletion has taken place
      */
     public boolean deleteAMilkYield(Cow aCow)
@@ -293,8 +293,8 @@ public class MaxTCoord {
     
     /**
      * Deletes a Cow object from the Collection of Cow objects held by a Herd object 
-     * @param aCow
-     * @param aHerd
+     * @param aCow The Cow object to delete
+     * @param aHerd The Herd object the Cow object belongs to.
      * @return true or false that the deletion has taken place
      */
     public boolean deleteACow(Cow aCow, Herd aHerd)
@@ -339,8 +339,8 @@ public class MaxTCoord {
     
     /**
      * Deletes a Herd object from the Collection of Herd objects held by a Farm object.
-     * @param aHerd
-     * @param aFarm
+     * @param aHerd The Herd object to be deleted
+     * @param aFarm The Farm object the Herd object belongs to
      * @return true or false that the deletion has taken place
      */
     public boolean deleteAHerd(Herd aHerd, Farm aFarm)
@@ -394,8 +394,8 @@ public class MaxTCoord {
     
     /**
      * Deletes a Farm object from the Collection of Farm objects held by the Coordinating class
-     * @param aFarm
-     * @return true or false that the deletion has taken palce
+     * @param aFarm The Farm object to be deleted
+     * @return true or false that the deletion has taken place
      */
     public boolean deleteAFarm(Farm aFarm)
     {
@@ -462,7 +462,7 @@ public class MaxTCoord {
     
     /**
      * Returns the entire collection of errors created while system has been running
-     * @return
+     * @return The List of all reported errors
      */
     public ArrayList<String> GetAllErrors()
     {
@@ -471,7 +471,7 @@ public class MaxTCoord {
     
     /**
      * Returns the most recent error put in the Collection of errors.
-     * @return
+     * @return String : the most recent error reported.
      */
     public String GetLastError()
     {
@@ -490,7 +490,7 @@ public class MaxTCoord {
     /**
      * Checks if the Herd objects associated Cow objects all have valid MilkYields
      * @param aHerd the herd Object being queried.
-     * @return 
+     * @return true || false
      */
     public boolean checkHerd(Herd aHerd)
     {
@@ -500,7 +500,7 @@ public class MaxTCoord {
     /**
      * Returns the average for a Herd
      * @param aHerd the Herd object being queried.
-     * @return 
+     * @return an integer represent the herd average milk yield.
      */
     public int getAverage(Herd aHerd)
     {
@@ -510,7 +510,7 @@ public class MaxTCoord {
     /**
      * Returns the String representation of the morning milk Yield for a Herd object
      * @param aHerd the Herd object being queried.
-     * @return 
+     * @return String representing the morning MaxT Time
      */
     public String getMaxTAmTime(Herd aHerd)
     {
@@ -520,7 +520,7 @@ public class MaxTCoord {
     /**
      * Returns the String representation of the evening milk Yield for a Herd object
      * @param aHerd the Herd object being queried.
-     * @return 
+     * @return String representing the evening MaxT time.
      */
     public String getMaxTPmTime(Herd aHerd)
     {
@@ -553,7 +553,7 @@ public class MaxTCoord {
      * MilkInterval and has the daily key
      * @param interval The MilkInterval to select the right MilkTable 
      * @param daily The Key in the MilkTable representing the daily milk volume
-     * @return 
+     * @return An array of Integers
      */
     public Integer[] getRow(MilkInterval interval, int daily)
     {
@@ -570,7 +570,7 @@ public class MaxTCoord {
     
     /**
      * Returns the CalculateMaxT object associated with MaxTCoord object.
-     * @return
+     * @return The CalculateMaxT object
      */
     public CalculateMaxT getCalcMaxT()
     {

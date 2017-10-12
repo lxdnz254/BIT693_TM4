@@ -29,7 +29,7 @@ public class MilkTable {
     }
     /**
      * Constructor for a MilkTable
-     * @param interval 
+     * @param interval the milk interval for the MilkTable object
      */
     public MilkTable(MilkInterval interval)
     {
@@ -53,7 +53,7 @@ public class MilkTable {
     /**
      * Returns the Integer array associated with the key give
      * @param dailyRow The key to search the MilkTable with.
-     * @return
+     * @return Integer[] an array of Integer objects
      */
     public Integer[] getRow(int dailyRow)
     {
@@ -62,7 +62,7 @@ public class MilkTable {
 
     /**
      * Returns the MilkInterval associated with the MilkTable object
-     * @return
+     * @return the milk interval.
      */
     public MilkInterval getMilkInterval()
     {
