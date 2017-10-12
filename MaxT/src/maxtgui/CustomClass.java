@@ -74,7 +74,7 @@ public class CustomClass {
     
     /**
      * Returns the MilkTables to the TableModel in the form of a 2D Array
-     * @return
+     * @return A 2D array of Integer objects
      */
     public Integer[][] getTable()
     {

@@ -59,7 +59,7 @@ public class Farm implements Comparable<Farm>{
     
     /**
      * Returns the Farm objects unique identifier
-     * @return
+     * @return String of the ident variable.
      */
     public String getFarmId() {
         return ident;
@@ -67,7 +67,7 @@ public class Farm implements Comparable<Farm>{
     
     /**
      * Returns the Farm object name
-     * @return
+     * @return String of the farm name.
      */
     public String getFarmName() {
         return farmName;
@@ -75,7 +75,7 @@ public class Farm implements Comparable<Farm>{
     
     /**
      * Returns the location of a Farm object
-     * @return
+     * @return String of the farm location
      */
     public String getFarmLocation() {
         return location;
@@ -83,7 +83,7 @@ public class Farm implements Comparable<Farm>{
     
     /**
      * Returns the Collection of Herd objects associated with the Farm object
-     * @return
+     * @return a Collection of Herd objects
      */
     public Collection<Herd> getHerds() {
         return herds;
@@ -101,7 +101,7 @@ public class Farm implements Comparable<Farm>{
     /**
      * Removes a Herd object from the Collection of Herd objects associated with
      * the Farm object
-     * @param aHerd
+     * @param aHerd the Herd object to be deleted.
      */
     public void deleteHerd(Herd aHerd) {
         herds.remove(aHerd);

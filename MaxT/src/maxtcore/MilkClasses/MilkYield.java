@@ -36,7 +36,7 @@ public class MilkYield {
     
     /**
      * Returns the morning milk yield
-     * @return
+     * @return an integer representing the morning milk yield.
      */
     public int getAmYield() {
         return amYield;
@@ -44,7 +44,7 @@ public class MilkYield {
     
     /**
      * Returns the evening milk yield
-     * @return
+     * @return an integer representing the evening milk yield.
      */
     public int getPmYield() {
         return pmYield;

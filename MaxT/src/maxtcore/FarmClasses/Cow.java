@@ -42,7 +42,7 @@ public class Cow implements Comparable<Cow>{
     
     /**
      *  Returns the unique identifier as a String object
-     * @return
+     * @return String of the indent variable
      */
     public String getCowId()
     {
@@ -51,7 +51,7 @@ public class Cow implements Comparable<Cow>{
     
     /**
      *  Returns the MilkYield object associated with this Cow object
-     * @return
+     * @return the MilkYield object associated with the Cow object.
      */
     public MilkYield getMilkYield()
     {
@@ -60,7 +60,7 @@ public class Cow implements Comparable<Cow>{
     
     /**
      * Returns the state of hasValidMilkYield
-     * @return 
+     * @return true || false
      */
     public boolean hasValidMilkYield()
     {
@@ -78,7 +78,7 @@ public class Cow implements Comparable<Cow>{
     
     /**
      * Flags the Cow object as having or having not a valid MilkYield object
-     * @param b
+     * @param b a boolean value either true || false
      */
     public void setValidMilkYield(boolean b) {
         this.hasValidMilkYield = b;
@@ -86,7 +86,7 @@ public class Cow implements Comparable<Cow>{
     
     /**
      * Associates the Cow object to a Herd objects Collection of Cow objects
-     * @param aHerd
+     * @param aHerd the Herd object to associate a Cow object to
      */
     public void addCowToHerd(Herd aHerd)
     {

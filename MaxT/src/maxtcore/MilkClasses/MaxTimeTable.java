@@ -37,7 +37,7 @@ public class MaxTimeTable
     /**
      * Returns the String value from the HashTable given by the key
      * @param key The key to look up the HashTable
-     * @return
+     * @return String
      */
     public String getTime(Integer key)
         {

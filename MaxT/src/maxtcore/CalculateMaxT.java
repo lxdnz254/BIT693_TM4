@@ -40,8 +40,8 @@ public class CalculateMaxT {
     }
     /**
      * Checks that all cows in a Herd object have valid Milk Yields
-     * @param aHerd
-     * @return 
+     * @param aHerd the Herd object to be tested for valid Cows
+     * @return true or false
      */
     public boolean allCowsHaveMilk(Herd aHerd)
     {
@@ -50,8 +50,8 @@ public class CalculateMaxT {
     
     /**
      * Calculates the average Milk Yield for a Herd of Cows
-     * @param aHerd
-     * @return 
+     * @param aHerd the Herd object to calculate the average milk yield for.
+     * @return an integer representing the average milk yield per cow in the herd.
      */
     public int herdMilkAverage(Herd aHerd)
     {
@@ -69,7 +69,7 @@ public class CalculateMaxT {
     
     /**
      * Returns the MaxTime string for the morning milking of a Herd object
-     * @param aHerd
+     * @param aHerd the Herd object to calculate the morning maxT time for.
      * @return String 
      */
     public String amMaxTTime(Herd aHerd)
@@ -93,8 +93,8 @@ public class CalculateMaxT {
     
     /**
      * Returns the MaxTime value for the evening milking of a Herd object
-     * @param aHerd
-     * @return
+     * @param aHerd The herd object to calculate the evening MaxT time for.
+     * @return String
      */
     public String pmMaxTTime(Herd aHerd)
     {
@@ -115,7 +115,7 @@ public class CalculateMaxT {
     
     /**
      * Returns the collection of MilkTable objects associated with CalculateMaxT
-     * @return
+     * @return a collection of MilkTable objects.
      */
     public Collection<MilkTable> getMilkTables()
     {
