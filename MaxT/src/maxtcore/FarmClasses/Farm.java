@@ -8,21 +8,21 @@ package maxtcore.FarmClasses;
 import java.util.*;
 
 /**
- *
+ * The Farm class for the core system.
  * @author acer
  */
 public class Farm implements Comparable<Farm>{
     
     private static int id = 0;
-    private String ident;
+    private final String ident;
     private String farmName;
     private String location;
     private Collection<Herd> herds;
     
     /**
-     *
-     * @param name
-     * @param location
+     * Constructor for a Farm object
+     * @param name A String representing a unique name for the Farm
+     * @param location A String representing the location of the Farm object
      */
     public Farm(String name, String location) {
         id++;
@@ -32,11 +32,20 @@ public class Farm implements Comparable<Farm>{
         herds = new HashSet();
     }
     
+    /**
+     * A Constructor for a empty Farm object
+     */
     public Farm()
     {
         ident = null;
     }
     
+    /**
+     * A method to convert an integer to a String that iterates 
+     * A-Z, AA-ZZ, AAA-ZZZ etc
+     * @param value the integer to create the String object
+     * @return 
+     */
     static String IntToLetters(int value)
     {
         String result = "";
@@ -49,7 +58,7 @@ public class Farm implements Comparable<Farm>{
     }
     
     /**
-     *
+     * Returns the Farm objects unique identifier
      * @return
      */
     public String getFarmId() {
@@ -57,7 +66,7 @@ public class Farm implements Comparable<Farm>{
     }
     
     /**
-     *
+     * Returns the Farm object name
      * @return
      */
     public String getFarmName() {
@@ -65,7 +74,7 @@ public class Farm implements Comparable<Farm>{
     }
     
     /**
-     *
+     * Returns the location of a Farm object
      * @return
      */
     public String getFarmLocation() {
@@ -73,18 +82,36 @@ public class Farm implements Comparable<Farm>{
     }
     
     /**
-     *
+     * Returns the Collection of Herd objects associated with the Farm object
      * @return
      */
     public Collection<Herd> getHerds() {
         return herds;
     }
     
+    /**
+     * Add a herd object to the Collection of Herd objects associated with the
+     * Farm object
+     * @param aHerd The Herd object to be added to the Collection
+     */
     public void addHerd(Herd aHerd) {
         herds.add(aHerd);
     }
     
+    /**
+     * Removes a Herd object from the Collection of Herd objects associated with
+     * the Farm object
+     * @param aHerd
+     */
+    public void deleteHerd(Herd aHerd) {
+        herds.remove(aHerd);
+    }
+    
     @Override
+    /**
+     * Overrides the equals() method from Object class and checks for equality
+     * on the Farm object ident variable.
+     */
     public boolean equals (Object obj)
     {
         if (this==obj) return true;
@@ -114,9 +141,5 @@ public class Farm implements Comparable<Farm>{
     public String toString()
     {
         return this.getFarmName();
-    }
-
-    public void deleteHerd(Herd aHerd) {
-        herds.remove(aHerd);
     }
 }

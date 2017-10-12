@@ -23,6 +23,10 @@ public class MaxTCoord {
     private Collection<Farm> farms;
     private MilkInterval milkInterval;
     private ArrayList<String> errors;
+
+    /**
+     * CustomClass calls this object to obtain
+     */
     public CalculateMaxT calcMaxT;
     
     /**
@@ -107,25 +111,28 @@ public class MaxTCoord {
     // <editor-fold defaultstate="collapsed">
     
     /**
-     *
-     * @param name
-     * @param location
+     * Adds a Farm object to the system, returns true if successful, or produces
+     * error report and returns false.
+     * @param name A String identifying the name of the Farm object
+     * @param location A String identifying the location of the Farm object
      * @return
      */
     public boolean addFarm(String name, String location)
     {
         try
         {
+            // validates the Farm name is not blank
             if (name.trim().isEmpty() || name.trim().matches("[a-zA-Z0-9 ]"))
             {
                 AddErrors("Farm not saved, Farm name is empty");
                 return false;
             }
+            // validates the location is not blank
             if (location.trim().isEmpty() || location.trim().equals("[a-zA-Z0-9 ]"))
             {
                 AddErrors("Farm not saved, Farm location is empty");
             }
-            // put a validation for equal farm names here
+            // validation for equal farm names in the system
             for (Farm checkFarm: farms)
             {
                 if (checkFarm.getFarmName().equals(name.trim()))
@@ -134,13 +141,13 @@ public class MaxTCoord {
                     return false;
                 }
             }
+            // store the Farm object in the system
             Farm farm = new Farm(name.trim(), location);
             farms.add(farm);
             return true;
         }
         catch(Exception e)
         {
-            System.out.println("Error: " + e);
             AddErrors("Error: " + e);
             return false;
         }
@@ -148,22 +155,25 @@ public class MaxTCoord {
     }
     
     /**
-     *
-     * @param name
-     * @param interval
-     * @param aFarm
+     * Adds a Herd object to the system and associates it with the given Farm
+     * object, returns true if successful, or produces error report and 
+     * returns false
+     * @param name a String identifying the name of the Herd object
+     * @param interval A MilkInterval object
+     * @param aFarm The Farm object the Herd will be associated with.
      * @return
      */
     public boolean addHerd(String name, MilkInterval interval, Farm aFarm)
     {
         try
         {
-            if (name.trim().isEmpty() || name.trim().matches("[^a-zA-Z0-9]"))
+            // validates the name is legitimate
+            if (name.trim().isEmpty() || name.trim().matches("[^a-zA-Z0-9 ]"))
             {
                 AddErrors("Herd not saved, Herd name is empty or contains special charcters");
                 return false;
             }
-            // put a validation for equal names here
+            // validation for equal names within the system
             for (Herd checkHerd : getHerds(aFarm))
             {
                 if (checkHerd.getHerdName().equals(name.trim()))
@@ -173,52 +183,56 @@ public class MaxTCoord {
                     return false;
                 }
             }
+            // stores the Herd object to the system.
             Herd herd = new Herd(name.trim(), interval);
             aFarm.addHerd(herd);
             return true;
         }
         catch(Exception e)
         {
-            System.out.println("Error: " + e);
             AddErrors("Error: " + e);
             return false;
         }
     }
     
     /**
-     *
-     * @param aHerd
-     * @param aFarm
+     * Adds a Cow object to the system, returns true if successful, or produces
+     * error report and returns false.
+     * @param aHerd The Herd object the Cow will be associated with.
+     * @param aFarm The Farm object the Herd is associated with, used to create
+     *              Cows unique identifier.
      * @return
      */
     public boolean addCow(Herd aHerd, Farm aFarm)
     {
         try
         {
+            // Adds a cow to the system, no validation is needed as no Cow will be 
+            // the same
             Cow cow = new Cow(aFarm, aHerd);
             aHerd.addCow(cow);
             return true;
         }
         catch(Exception e)
         {
-            System.out.println("Error: " + e);
             AddErrors("Error: "  + e);
             return false;
-        }
-        
+        }   
     }
 
     /**
-     * 
-     * @param aCow
-     * @param am
-     * @param pm
+     * Adds a MilkYield object to a Cow object, returns true if successful, or 
+     * produces an error report and returns false
+     * @param aCow The Cow object the milk Yield is being added/updated to.
+     * @param am an integer representing the morning milk volume
+     * @param pm an integer representing the evening milk volume
      * @return 
      */
-    public boolean addMilkTaking(Cow aCow, int am, int pm)
+    public boolean addMilkYield(Cow aCow, int am, int pm)
     {
         try
         {
+            // Get the MilkYiled object associated with aCow
             MilkYield milkYield = aCow.getMilkYield();
             milkYield.setYield(am, pm);
             aCow.setValidMilkYield(true);
@@ -397,8 +411,7 @@ public class MaxTCoord {
                     {
                         AddErrors("Farm not deleted, herds still exist on this Farm!");
                         return false;
-                    }
-                    
+                    }   
                 }
                 else
                 {
@@ -425,6 +438,11 @@ public class MaxTCoord {
     
     // <editor-fold defaultstate="collapsed">
     
+    /**
+     * Adds an error report to the Collection of Strings used for storing errors
+     * @param e a String object representing the error.
+     */
+        
     public void AddErrors(String e)
     {
         errors.add(e);
@@ -459,7 +477,7 @@ public class MaxTCoord {
     
     /**
      * Checks if the Herd objects associated Cow objects all have valid MilkYields
-     * @param aHerd
+     * @param aHerd the herd Object being queried.
      * @return 
      */
     public boolean checkHerd(Herd aHerd)
@@ -469,7 +487,7 @@ public class MaxTCoord {
     
     /**
      * Returns the average for a Herd
-     * @param aHerd
+     * @param aHerd the Herd object being queried.
      * @return 
      */
     public int getAverage(Herd aHerd)
@@ -478,8 +496,8 @@ public class MaxTCoord {
     }
     
     /**
-     * 
-     * @param aHerd
+     * Returns the String representation of the morning milk Yield for a Herd object
+     * @param aHerd the Herd object being queried.
      * @return 
      */
     public String getMaxTAmTime(Herd aHerd)
@@ -488,8 +506,8 @@ public class MaxTCoord {
     }
     
     /**
-     * 
-     * @param aHerd
+     * Returns the String representation of the evening milk Yield for a Herd object
+     * @param aHerd the Herd object being queried.
      * @return 
      */
     public String getMaxTPmTime(Herd aHerd)
@@ -498,11 +516,12 @@ public class MaxTCoord {
     }
     
     /**
-     * 
-     * @param interval
-     * @param daily
-     * @param am
-     * @param pm 
+     * Adds a Row of milk volume takings to the MilkTable object associated with
+     * the MilkInterval object
+     * @param interval The identifier for the MilkTable
+     * @param daily The daily amount of milk, this is the Key in the MilkTable
+     * @param am The AM milk volume.
+     * @param pm The PM milk volume.
      */
     public void addRow(MilkInterval interval, int daily, int am, int pm)
     {
@@ -518,9 +537,10 @@ public class MaxTCoord {
     }
     
     /**
-     * 
-     * @param interval
-     * @param daily
+     * Returns the MilkYield values from the MilkTable object associated with the
+     * MilkInterval and has the daily key
+     * @param interval The MilkInterval to select the right MilkTable 
+     * @param daily The Key in the MilkTable representing the daily milk volume
      * @return 
      */
     public Integer[] getRow(MilkInterval interval, int daily)
@@ -532,12 +552,23 @@ public class MaxTCoord {
             {
                 getRowTable = table;
             }
-        }
-        
+        }    
         return getRowTable.getRow(daily);
     }
     
-    public void initialiseMilkTable()
+    /**
+     * Returns the CalculateMaxT object associated with MaxTCoord object.
+     * @return
+     */
+    public CalculateMaxT getCalcMaxT()
+    {
+        return calcMaxT;
+    }
+    
+    /**
+     * Set up the MilkTables on first run of application.
+     */
+    private void initialiseMilkTable()
     {
         addRow(MilkInterval.EIGHT_16, 20, 13, 7);
         

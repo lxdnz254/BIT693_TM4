@@ -8,14 +8,17 @@ package maxtcore.MilkClasses;
 import java.util.*;
 
 /**
- *
+ * The class holding the references to the MaxT times associated to a milk Yield
  * @author acer
  */
 public class MaxTimeTable
     {
         HashMap<Integer, String> timeTable;
         
-        public MaxTimeTable()
+    /**
+     * Constructor for MaxTimeTable that generates the time references.
+     */
+    public MaxTimeTable()
         {
             timeTable = new HashMap<>();
             timeTable.put(7, "04:51");
@@ -31,8 +34,13 @@ public class MaxTimeTable
             timeTable.put(17, "09:13");
         }
         
-        public String getTime(Integer value)
+    /**
+     * Returns the String value from the HashTable given by the key
+     * @param key The key to look up the HashTable
+     * @return
+     */
+    public String getTime(Integer key)
         {
-            return timeTable.get(value);
+            return timeTable.get(key);
         }
     }

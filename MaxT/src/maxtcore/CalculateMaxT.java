@@ -14,7 +14,8 @@ import maxtcore.MilkClasses.MilkTable;
 import java.util.*;
 
 /**
- *
+ * A coordinating class for determining the MaxT times 
+ * and Average Yields of a Herd of cows
  * @author acer
  */
 public class CalculateMaxT {
@@ -25,6 +26,7 @@ public class CalculateMaxT {
     MilkTable milkTable9;
     
     /**
+     * Constructor to for the CalculateMaxT class
      * Set up the milk table values;
      */
     public CalculateMaxT()
@@ -65,6 +67,11 @@ public class CalculateMaxT {
         return totalMilkYield/aHerd.getCows().size();
     }
     
+    /**
+     * Returns the MaxTime string for the morning milking of a Herd object
+     * @param aHerd
+     * @return String 
+     */
     public String amMaxTTime(Herd aHerd)
     {
         maxTTime = new MaxTimeTable();
@@ -84,6 +91,11 @@ public class CalculateMaxT {
         return maxTTime.getTime(times[0]);
     }
     
+    /**
+     * Returns the MaxTime value for the evening milking of a Herd object
+     * @param aHerd
+     * @return
+     */
     public String pmMaxTTime(Herd aHerd)
     {
         maxTTime = new MaxTimeTable();
@@ -101,6 +113,10 @@ public class CalculateMaxT {
         return maxTTime.getTime(times[1]);
     }
     
+    /**
+     * Returns the collection of MilkTable objects associated with CalculateMaxT
+     * @return
+     */
     public Collection<MilkTable> getMilkTables()
     {
         return milkTables;

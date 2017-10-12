@@ -6,7 +6,7 @@
 package maxtcore.MilkClasses;
 
 /**
- *
+ * Class to store the milk yields associated with a Cow object
  * @author acer
  */
 public class MilkYield {
@@ -15,7 +15,7 @@ public class MilkYield {
     private int pmYield;
     
     /**
-     *
+     * Initial constructor,sets yields to 0
      */
     public MilkYield()
     {
@@ -24,9 +24,9 @@ public class MilkYield {
     }
     
     /**
-     *
-     * @param am
-     * @param pm
+     * Constructor for a MilkYield object that initializes values
+     * @param am the morning milk yield value
+     * @param pm the evening milk yield value.
      */
     public MilkYield(int am, int pm)
     {
@@ -35,7 +35,7 @@ public class MilkYield {
     }
     
     /**
-     *
+     * Returns the morning milk yield
      * @return
      */
     public int getAmYield() {
@@ -43,7 +43,7 @@ public class MilkYield {
     }
     
     /**
-     *
+     * Returns the evening milk yield
      * @return
      */
     public int getPmYield() {
@@ -51,14 +51,13 @@ public class MilkYield {
     }
     
     /**
-     *
-     * @param am
-     * @param pm
+     * Sets the milk yields for a MilkYield object
+     * @param am the morning milk yield.
+     * @param pm the evening milk yield.
      */
     public void setYield(int am, int pm)
     {
         amYield = am;
         pmYield = pm;
-    }
-    
+    }    
 }

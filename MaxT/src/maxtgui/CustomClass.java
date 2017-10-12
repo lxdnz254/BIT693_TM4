@@ -11,7 +11,7 @@ import maxtcore.MilkClasses.MilkInterval;
 import maxtcore.MilkClasses.MilkTable;
 
 /**
- *
+ * A Utility class to populate the TableModel for the jTable in the GUI
  * @author acer
  */
 public class CustomClass {
@@ -28,20 +28,25 @@ public class CustomClass {
     Integer[] milkYields;
     Integer[][] populatedTable;
    
-    
+    /**
+     * Constructor for the customer class
+     */
     public CustomClass()
     {
         maxtCoord = new MaxTCoord();
-        milkTables = new ArrayList<>(maxtCoord.calcMaxT.getMilkTables());
+        milkTables = new ArrayList<>(maxtCoord.getCalcMaxT().getMilkTables());
         milkMap1 = new HashMap<>();
         milkMap2 = new HashMap<>();
     }
     
-    Integer[][] populateTables(ArrayList<MilkTable> collection)
+    // private class to populate the TableModel
+    private Integer[][] populateTables(ArrayList<MilkTable> collection)
     {
+        // shape of the Table
         Integer[][] table = new Integer[6][5];
         MilkTable table8 = new MilkTable();
         MilkTable table9 = new MilkTable();
+        // Ensure the correct MilkTable is placed in correct position
         for (MilkTable checkTable: collection)
         {
             if (checkTable.getMilkInterval() == MilkInterval.EIGHT_16)
@@ -53,7 +58,7 @@ public class CustomClass {
                 table9 = checkTable;
             }
         }
-        
+        // Insert the tables to the arrays
         for (int i = 20; i<=25; i++)
         {
         milkMap1.put(i, table8.getRow(i));
@@ -63,28 +68,16 @@ public class CustomClass {
         table[i-20][2] = milkMap1.get(i)[1];
         table[i-20][3] = milkMap2.get(i)[0];
         table[i-20][4] = milkMap2.get(i)[1];
-        }
-        
+        }        
         return table;
     }
     
+    /**
+     * Returns the MilkTables to the TableModel in the form of a 2D Array
+     * @return
+     */
     public Integer[][] getTable()
     {
         return populateTables(milkTables);
-    }
-    
-    public Integer[] getRowValues()
-    {
-        return new Integer[]{dailyValue, amEight, pmEight, amNine, pmNine};
-    }
-    
-    public void setRowValues(Integer[] values)
-    {
-        dailyValue = values[0];
-        amEight = values[1];
-        pmEight = values[2];
-        amNine = values[3];
-        pmNine = values[4];
-    }
-    
+    }  
 }

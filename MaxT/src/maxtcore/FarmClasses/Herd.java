@@ -9,21 +9,21 @@ import maxtcore.MilkClasses.MilkInterval;
 import java.util.*;
 
 /**
- *
+ * The Herd class for the maxT core system
  * @author acer
  */
 public class Herd implements Comparable<Herd>{
     
     private static int id = 0;
-    private String ident;
+    private final String ident;
     private String name;
     private MilkInterval milkingInterval;
     private Collection<Cow> cows;
     
     /**
-     *
-     * @param aName
-     * @param interval
+     * Constructor for a Herd object
+     * @param aName a String representation of the Herd name
+     * @param interval The time interval A Herd is milked 
      */
     public Herd(String aName, MilkInterval interval)
     {
@@ -34,13 +34,16 @@ public class Herd implements Comparable<Herd>{
         cows = new HashSet();
     }
     
+    /**
+     * An empty constructor for comparison testing
+     */
     public Herd()
     {
         ident = null;
     }
     
     /**
-     *
+     * Returns the Herd objects unique identifier
      * @return
      */
     public String getHerdId()
@@ -49,7 +52,7 @@ public class Herd implements Comparable<Herd>{
     }
     
     /**
-     *
+     * Returns the Herd objects name
      * @return
      */
     public String getHerdName()
@@ -58,7 +61,7 @@ public class Herd implements Comparable<Herd>{
     }
     
     /**
-     *
+     * Returns the MilkInterval a Herd object has
      * @return
      */
     public MilkInterval getHerdInterval()
@@ -67,7 +70,7 @@ public class Herd implements Comparable<Herd>{
     }
     
     /**
-     *
+     * Returns the Collection of Cow objects associated with the Herd object.
      * @return
      */
     public Collection<Cow> getCows()
@@ -75,25 +78,38 @@ public class Herd implements Comparable<Herd>{
         return cows;
     }
     
+    /**
+     * Adds a Cow object to the Collection of Cows associated with the Herd object
+     * @param aCow The Cow object to be added to the Collection.
+     */
     public void addCow(Cow aCow)
     {
         cows.add(aCow);
     }
     
     /**
-     *
+     * Adds the Herd object to a Farm objects Collection of Herd objects
      * @param aFarm
      */
     public void addHerdToFarm(Farm aFarm) {
         aFarm.addHerd(this);
     }
     
+    /**
+     * Removes a Cow object from the Collection of Cow objects associated with
+     * the Herd object
+     * @param aCow The Cow object to be removed
+     */
     public void deleteCow(Cow aCow)
     {
         cows.remove(aCow);
     }
     
     @Override
+    /**
+     * Overrides the equals() method from the object class.
+     * Compares on the Herd ident variable.
+     */
     public boolean equals (Object obj)
     {
         if (this==obj) return true;

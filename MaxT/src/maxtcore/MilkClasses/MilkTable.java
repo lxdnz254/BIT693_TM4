@@ -8,22 +8,20 @@ package maxtcore.MilkClasses;
 import java.util.*;
 
 /**
- *
+ * The Class to hold the approximate morning and evening yields for a 
+ * daily yield of cows milk. Different yields are held held for different
+ * milk intervals.
  * @author acer
  */
 public class MilkTable {
-        
-    MilkInterval milkInterval;
-    int dailyTaking;
-    int amTaking;
-    int pmTaking;
-
-    Map<Integer, Integer[]> dailyMap;
-    Integer[] yieldArray;
-
+    // The reference to a MilkInterval enum   
+    private MilkInterval milkInterval;
+    // The references to the maps
+    private Map<Integer, Integer[]> dailyMap;
+    private Integer[] yieldArray;
 
     /**
-     * Blank constructor
+     * Blank constructor to fill in comparison methods
      */
     public MilkTable()
     {
@@ -39,23 +37,42 @@ public class MilkTable {
         dailyMap = new HashMap<>();
     }
 
+    /**
+     * Populates a row in a MilkTable object
+     * @param daily The Key for the milk table, which represents the daily milk 
+     * yield of a cow/herd
+     * @param am The morning milk yield
+     * @param pm The evening milk yield
+     */
     public void populateRow(Integer daily, Integer am, Integer pm)
     {
         yieldArray = new Integer[]{am,pm};
         dailyMap.put(daily, yieldArray);
     }
 
+    /**
+     * Returns the Integer array associated with the key give
+     * @param dailyRow The key to search the MilkTable with.
+     * @return
+     */
     public Integer[] getRow(int dailyRow)
     {
         return dailyMap.get(dailyRow);
     }
 
+    /**
+     * Returns the MilkInterval associated with the MilkTable object
+     * @return
+     */
     public MilkInterval getMilkInterval()
     {
         return this.milkInterval;
     }
 
     @Override
+    /**
+     * Overrides the equals() method from Object class and compares on MilkInterval
+     */
     public boolean equals(Object obj)
     {
         if (this==obj) return true;

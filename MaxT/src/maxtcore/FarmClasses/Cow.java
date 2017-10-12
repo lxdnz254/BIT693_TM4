@@ -8,7 +8,7 @@ package maxtcore.FarmClasses;
 import maxtcore.MilkClasses.MilkYield;
 import java.util.*;
 /**
- *
+ * The Cow class for the MaxT system
  * @author acer
  */
 public class Cow implements Comparable<Cow>{
@@ -19,9 +19,10 @@ public class Cow implements Comparable<Cow>{
     private boolean hasValidMilkYield;
     
     /**
-     *
-     * @param aFarm
-     * @param aHerd
+     * Constructor for a Cow object, Uses Farm object and Herd object to build
+     * unique identifier
+     * @param aFarm The Farm object.
+     * @param aHerd The Herd object.
      */
     public Cow(Farm aFarm, Herd aHerd)
     {
@@ -31,13 +32,16 @@ public class Cow implements Comparable<Cow>{
         hasValidMilkYield = false;
     }
     
+    /**
+     * A Constructor of an empty Cow object, for comparison testing 
+     */
     public Cow()
     {
         ident = null;
     }
     
     /**
-     *
+     *  Returns the unique identifier as a String object
      * @return
      */
     public String getCowId()
@@ -72,11 +76,18 @@ public class Cow implements Comparable<Cow>{
         setValidMilkYield(false);
     }
     
-    
+    /**
+     * Flags the Cow object as having or having not a valid MilkYield object
+     * @param b
+     */
     public void setValidMilkYield(boolean b) {
         this.hasValidMilkYield = b;
     }
     
+    /**
+     * Associates the Cow object to a Herd objects Collection of Cow objects
+     * @param aHerd
+     */
     public void addCowToHerd(Herd aHerd)
     {
         aHerd.addCow(this);
@@ -116,6 +127,7 @@ public class Cow implements Comparable<Cow>{
     {
         if (this.hasValidMilkYield())
         {
+            // Highlights on the display if a cow has a valid MilkYield object
             return this.getCowId().concat(" *");
         }
         return this.getCowId();

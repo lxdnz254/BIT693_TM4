@@ -36,14 +36,16 @@ public class MaxTGUI extends javax.swing.JFrame {
     final String[] noHerds = {"No herds currently available"};
     final String[] noFarms = {"No farms currently available"};
     final String[] noCows = {"No cows currently available"};
+    
     /**
      * Creates new form MaxTGUI
      */
     public MaxTGUI() {
         initComponents();
-        systemInfoTextArea.setText("System Information: This is only a prototype application. \r\n\r\n" +
-                "Functionality is limited to navigation and examples of system functions, " +
-                "which will be displayed in this area.");
+        systemInfoTextArea.setText("System Information: Welcome to CalculateMaxT. \r\n\r\n" +
+                "A functional application allowing the user to add/remove Farms, Herds, Cows, " +
+                "and update milk takings. \r\n\r\nThe system will calculate average Herd milk yields" +
+                " and output appropriate MaxT values.");
         maxTCoord = new MaxTCoord();
         TableDialog.setVisible(false);
         tableClosing = false;
@@ -397,7 +399,7 @@ public class MaxTGUI extends javax.swing.JFrame {
     private void saveMilkTaking() 
     {
         Cow theCow = cows.get(selectCowList.getSelectedIndex());
-        if(maxTCoord.addMilkTaking(theCow,
+        if(maxTCoord.addMilkYield(theCow,
                     (int)amMilkYieldSpinner.getValue(),
                     (int)pmMilkYieldSpinner.getValue()))
         {
@@ -805,7 +807,7 @@ public class MaxTGUI extends javax.swing.JFrame {
             mainScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainScreenPanelLayout.createSequentialGroup()
                 .addGap(45, 45, 45)
-                .addGroup(mainScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(mainScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(mainScreenPanelLayout.createSequentialGroup()
                         .addGroup(mainScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(selectFarmComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -821,7 +823,7 @@ public class MaxTGUI extends javax.swing.JFrame {
                     .addGroup(mainScreenPanelLayout.createSequentialGroup()
                         .addGap(5, 5, 5)
                         .addComponent(statisticsLabel))
-                    .addComponent(statisticsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(statisticsScrollPane))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(mainScreenPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainScreenPanelLayout.createSequentialGroup()
@@ -1421,7 +1423,7 @@ public class MaxTGUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(systemInfoTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         pack();
