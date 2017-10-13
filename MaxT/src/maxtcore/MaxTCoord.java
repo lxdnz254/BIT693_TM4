@@ -121,13 +121,13 @@ public class MaxTCoord {
         try
         {
             // validates the Farm name is not blank
-            if (name.trim().isEmpty() || name.trim().matches("[a-zA-Z0-9 ]"))
+            if (name.trim().isEmpty() || !name.trim().matches("[a-zA-Z0-9 ]"))
             {
                 AddErrors("Farm not saved, Farm name is empty");
                 return false;
             }
             // validates the location is not blank
-            if (location.trim().isEmpty() || location.trim().equals("[a-zA-Z0-9 ]"))
+            if (location.trim().isEmpty() || !location.trim().matches("[a-zA-Z0-9 ]"))
             {
                 AddErrors("Farm not saved, Farm location is empty");
             }

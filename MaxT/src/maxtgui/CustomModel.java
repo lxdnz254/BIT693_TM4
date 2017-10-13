@@ -7,6 +7,7 @@ package maxtgui;
 
 import java.util.*;
 import javax.swing.table.AbstractTableModel;
+import maxtcore.MilkClasses.MaxTimeTable;
 
 /**
  * A Custom TableModel Class for adding to a jTable in a Swing User Interface
@@ -14,16 +15,18 @@ import javax.swing.table.AbstractTableModel;
  */
 public class CustomModel extends AbstractTableModel{
     
-    private final Object[] columns = {"Daily Yeild", "8 & 16 am", "8 & 16 pm", "9 & 15 am", "9 & 15 pm"};
+    private final Object[] columns = {"Daily Yield", "8 & 16 am", "8 & 16 pm", "9 & 15 am", "9 & 15 pm"};
     ArrayList<Integer[]> data;
     CustomClass customC;
     Integer[][] table;
+    MaxTimeTable maxTime;
     
     /**
     * Constructor for the Custom Model
     */
    public CustomModel() {
-    this.data = getDataForDropList();
+        maxTime = new MaxTimeTable();
+        this.data = getDataForDropList();
    }
 
    @Override
@@ -45,7 +48,8 @@ public class CustomModel extends AbstractTableModel{
    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
        // Set Values here;
        Integer theValue = (Integer)aValue;
-       if (theValue >= 7 && theValue <= 17){
+       Integer lowest = minimumMaxTimeKey();
+       if (maxTime.getMaxTimeTable().containsKey(theValue)){ // check the value is valid for MaxT time
            table[rowIndex][columnIndex] = theValue;
            fireTableCellUpdated(rowIndex, columnIndex);
            switch(columnIndex)
@@ -54,8 +58,8 @@ public class CustomModel extends AbstractTableModel{
                    if((theValue + table[rowIndex][2])!= table[rowIndex][0])
                    {
                        table[rowIndex][2] = table[rowIndex][0] - theValue;
-                       if(table[rowIndex][2]< 7){
-                           setValueAt(7, rowIndex, 2);
+                       if(table[rowIndex][2]< lowest){
+                           setValueAt(lowest, rowIndex, 2);
                        }
                    } 
                    break;
@@ -64,8 +68,8 @@ public class CustomModel extends AbstractTableModel{
                    if((theValue + table[rowIndex][1]) != table[rowIndex][0])
                    {
                        table[rowIndex][1] = table[rowIndex][0] - theValue;
-                       if(table[rowIndex][1] < 7){
-                           setValueAt(7, rowIndex, 1);
+                       if(table[rowIndex][1] < lowest){
+                           setValueAt(lowest, rowIndex, 1);
                        }
                    }
                    break;
@@ -74,8 +78,8 @@ public class CustomModel extends AbstractTableModel{
                    if((theValue + table[rowIndex][4]) != table[rowIndex][0])
                    {
                        table[rowIndex][4] = table[rowIndex][0] - theValue;
-                       if(table[rowIndex][4] < 7) {
-                           setValueAt(7, rowIndex, 4);
+                       if(table[rowIndex][4] < lowest) {
+                           setValueAt(lowest, rowIndex, 4);
                        }
                    }
                    break;
@@ -84,8 +88,8 @@ public class CustomModel extends AbstractTableModel{
                    if((theValue + table[rowIndex][3]) != table[rowIndex][0])
                    {
                        table[rowIndex][3] = table[rowIndex][0] - theValue;
-                       if(table[rowIndex][3] < 7){
-                           setValueAt(7, rowIndex, 3);
+                       if(table[rowIndex][3] < lowest){
+                           setValueAt(lowest, rowIndex, 3);
                        }
                    }
                }
@@ -106,7 +110,7 @@ public class CustomModel extends AbstractTableModel{
    @Override
    public Class<?> getColumnClass(int columnIndex) {
        // Depending on the type of the column. Return data type;
-       return getValueAt(1, columnIndex).getClass();
+       return getValueAt(0, columnIndex).getClass();
    }
 
 
@@ -127,4 +131,14 @@ public class CustomModel extends AbstractTableModel{
             // Finally return the ArrayList
         return modelList;
    }
+    
+    private Integer minimumMaxTimeKey()
+    {
+        Integer lowest = 100;
+        for (Integer key : maxTime.getMaxTimeTable().keySet())
+        {
+            if (key < lowest) {lowest = key;}
+        }
+        return lowest;
+    }
 }
