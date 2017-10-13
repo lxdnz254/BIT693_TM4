@@ -15,7 +15,7 @@ import java.util.*;
 
 
 /**
- *
+ * The coordinating class between a user interface and the maxtcore system
  * @author acer
  */
 public class MaxTCoord {
@@ -246,7 +246,6 @@ public class MaxTCoord {
             // Get the MilkYield object associated with aCow
             MilkYield milkYield = aCow.getMilkYield();
             milkYield.setYield(am, pm);
-            aCow.setValidMilkYield(true);
             return true;
         }
         catch (Exception e)

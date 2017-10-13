@@ -28,8 +28,7 @@ public class Cow implements Comparable<Cow>{
     {
         id++;
         ident = aFarm.getFarmId()+"-"+aHerd.getHerdId()+"-"+Integer.toString(id);
-        milkYield = new MilkYield();
-        hasValidMilkYield = false;
+        milkYield = new MilkYield(this);
     }
     
     /**

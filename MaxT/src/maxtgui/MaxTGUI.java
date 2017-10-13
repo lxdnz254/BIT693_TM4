@@ -13,8 +13,9 @@ import maxtcore.MilkClasses.MilkInterval;
 import maxtcore.*;
 import java.util.*;
 import javax.swing.DefaultComboBoxModel;
+
 /**
- *
+ * The Graphical User Interface for the Calculate MaxT system
  * @author acer
  */
 public class MaxTGUI extends javax.swing.JFrame {
@@ -67,9 +68,9 @@ public class MaxTGUI extends javax.swing.JFrame {
             {
                 int average = maxTCoord.getAverage(theHerd); // get the herd average
                 statisticsTextArea.setText("For the selected Herd: " 
-                + herds.get(selectHerdComboBox.getSelectedIndex()) + "\r\n\r\n"
-                + "Number of Cows: " + cows.size() + "\r\n\r\n"
-                + "Average Milk Yield: " + average + "\r\n\r\n");
+                    + herds.get(selectHerdComboBox.getSelectedIndex()) + "\r\n\r\n"
+                    + "Number of Cows: " + cows.size() + "\r\n\r\n"
+                    + "Average Milk Yield: " + average + "\r\n\r\n");
                 // test if the average is valid for the MaxT values in the system
                 if (average >= (int)milkValuesTable.getValueAt(0, 0) 
                         && average <= (int)milkValuesTable.getValueAt(
@@ -82,16 +83,16 @@ public class MaxTGUI extends javax.swing.JFrame {
                 else
                 {
                     statisticsTextArea.setText(statisticsTextArea.getText() +
-                            "Herd average is outside the scope of MaxT values for the current system.");
+                        "Herd average is outside the scope of MaxT values for the current system.");
                 }
             }
             else
             {
                 statisticsTextArea.setText("For the selected Herd: " 
-                + herds.get(selectHerdComboBox.getSelectedIndex()) + "\r\n\r\n"
-                + "Number of Cows: " + cows.size() + "\r\n\r\n"
-                + "Average Milk Yield: " + "\r\n\r\n"
-                + "MaxT Value: ");
+                    + herds.get(selectHerdComboBox.getSelectedIndex()) + "\r\n\r\n"
+                    + "Number of Cows: " + cows.size() + "\r\n\r\n"
+                    + "Average Milk Yield: " + "\r\n\r\n"
+                    + "MaxT Value: ");
             }
         
         }
@@ -483,6 +484,16 @@ public class MaxTGUI extends javax.swing.JFrame {
                 systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
             }
         }
+        catch(NullPointerException e)
+        {
+           maxTCoord.AddErrors("You have not selected a cow to delete: " + e);
+           systemInfoTextArea.setText("Sytstem Information: " + maxTCoord.GetLastError());
+        }
+        catch(IndexOutOfBoundsException e)
+        {
+           maxTCoord.AddErrors("The cow you have selected does not exist in the system: " + e);
+           systemInfoTextArea.setText("Sytstem Information: " + maxTCoord.GetLastError());
+        }
         catch(Exception e)
         {
             maxTCoord.AddErrors("Delete Error: " + e);
@@ -508,6 +519,16 @@ public class MaxTGUI extends javax.swing.JFrame {
             {
                 systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
             }
+        }
+        catch(NullPointerException e)
+        {
+           maxTCoord.AddErrors("You have not selected a herd to delete: " + e);
+           systemInfoTextArea.setText("Sytstem Information: " + maxTCoord.GetLastError());
+        }
+        catch(IndexOutOfBoundsException e)
+        {
+           maxTCoord.AddErrors("The herd you have selected does not exist in the system: " + e);
+           systemInfoTextArea.setText("Sytstem Information: " + maxTCoord.GetLastError());
         }
         catch(Exception e)
         {
@@ -535,6 +556,16 @@ public class MaxTGUI extends javax.swing.JFrame {
             {
                 systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
             }
+        }
+        catch(NullPointerException e)
+        {
+           maxTCoord.AddErrors("You have not selected a farm to delete: " + e);
+           systemInfoTextArea.setText("Sytstem Information: " + maxTCoord.GetLastError());
+        }
+        catch(IndexOutOfBoundsException e)
+        {
+           maxTCoord.AddErrors("The farm you have selected does not exist in the system: " + e);
+           systemInfoTextArea.setText("Sytstem Information: " + maxTCoord.GetLastError());
         }
         catch(Exception e)
         {
