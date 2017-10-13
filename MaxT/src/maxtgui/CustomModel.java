@@ -7,12 +7,9 @@ package maxtgui;
 
 import java.util.*;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import maxtcore.MilkClasses.MilkTable;
 
 /**
- *
+ * A Custom TableModel Class for adding to a jTable in a Swing User Interface
  * @author acer
  */
 public class CustomModel extends AbstractTableModel{
@@ -22,11 +19,11 @@ public class CustomModel extends AbstractTableModel{
     CustomClass customC;
     Integer[][] table;
     
-/**
-    *
+    /**
+    * Constructor for the Custom Model
     */
    public CustomModel() {
-   this.data = getDataForDropList();
+    this.data = getDataForDropList();
    }
 
    @Override
@@ -50,6 +47,7 @@ public class CustomModel extends AbstractTableModel{
        Integer theValue = (Integer)aValue;
        if (theValue >= 7 && theValue <= 17){
            table[rowIndex][columnIndex] = theValue;
+           fireTableCellUpdated(rowIndex, columnIndex);
            switch(columnIndex)
            {
                case 1:{

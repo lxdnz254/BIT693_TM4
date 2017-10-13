@@ -65,12 +65,25 @@ public class MaxTGUI extends javax.swing.JFrame {
             Herd theHerd = herds.get(selectHerdComboBox.getSelectedIndex());
             if(maxTCoord.checkHerd(theHerd) && cows.size() > 0)
             {
+                int average = maxTCoord.getAverage(theHerd); // get the herd average
                 statisticsTextArea.setText("For the selected Herd: " 
                 + herds.get(selectHerdComboBox.getSelectedIndex()) + "\r\n\r\n"
                 + "Number of Cows: " + cows.size() + "\r\n\r\n"
-                + "Average Milk Yield: " + maxTCoord.getAverage(theHerd) + "\r\n\r\n"
-                + "MaxT Value - AM milking: " + maxTCoord.getMaxTAmTime(theHerd) + "\r\n"
-                + "               - PM milking: " + maxTCoord.getMaxTPmTime(theHerd));
+                + "Average Milk Yield: " + average + "\r\n\r\n");
+                // test if the average is valid for the MaxT values in the system
+                if (average >= (int)milkValuesTable.getValueAt(0, 0) 
+                        && average <= (int)milkValuesTable.getValueAt(
+                                            milkValuesTable.getRowCount() - 1,0))                                            
+                {
+                    statisticsTextArea.setText(statisticsTextArea.getText() + 
+                        "MaxT Value - AM milking: " + maxTCoord.getMaxTAmTime(theHerd) + "\r\n"
+                        + "               - PM milking: " + maxTCoord.getMaxTPmTime(theHerd));
+                }
+                else
+                {
+                    statisticsTextArea.setText(statisticsTextArea.getText() +
+                            "Herd average is outside the scope of MaxT values for the current system.");
+                }
             }
             else
             {
@@ -639,7 +652,6 @@ public class MaxTGUI extends javax.swing.JFrame {
         deleteFarmButton = new javax.swing.JButton();
 
         TableDialog.setTitle("Daily Milk Yield Values");
-        TableDialog.setPreferredSize(new java.awt.Dimension(600, 600));
         TableDialog.setSize(new java.awt.Dimension(600, 600));
         TableDialog.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -656,6 +668,7 @@ public class MaxTGUI extends javax.swing.JFrame {
         milkValuesTable.setModel(new CustomModel());
         milkValuesTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         milkValuesTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        milkValuesTable.setRowSelectionAllowed(false);
         milkValuesTable.getTableHeader().setReorderingAllowed(false);
         tableScrollPane.setViewportView(milkValuesTable);
         milkValuesTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);

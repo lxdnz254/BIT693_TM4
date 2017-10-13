@@ -16,17 +16,11 @@ import maxtcore.MilkClasses.MilkTable;
  */
 public class CustomClass {
     
-    Integer dailyValue;
-    Integer amEight;
-    Integer pmEight;
-    Integer amNine;
-    Integer pmNine;
-    ArrayList<MilkTable> milkTables;
-    MaxTCoord maxtCoord;
-    Map<Integer, Integer[]> milkMap1;
-    Map<Integer, Integer[]> milkMap2;
-    Integer[] milkYields;
-    Integer[][] populatedTable;
+    // Instance variables for the Custom class
+    private final ArrayList<MilkTable> milkTables;
+    private final MaxTCoord maxtCoord;
+    private final Map<Integer, Integer[]> milkMap1;
+    private final Map<Integer, Integer[]> milkMap2;
    
     /**
      * Constructor for the customer class
@@ -39,11 +33,12 @@ public class CustomClass {
         milkMap2 = new HashMap<>();
     }
     
-    // private class to populate the TableModel
+    /**
+     * Private class to populate the TableModel
+     */ 
     private Integer[][] populateTables(ArrayList<MilkTable> collection)
     {
-        // shape of the Table
-        Integer[][] table = new Integer[6][5];
+        // create references to populate the MilkTables
         MilkTable table8 = new MilkTable();
         MilkTable table9 = new MilkTable();
         // Ensure the correct MilkTable is placed in correct position
@@ -58,6 +53,8 @@ public class CustomClass {
                 table9 = checkTable;
             }
         }
+        // shape of the Table
+        Integer[][] table = new Integer[6][5];
         // Insert the tables to the arrays
         for (int i = 20; i<=25; i++)
         {

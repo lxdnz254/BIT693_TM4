@@ -28,7 +28,8 @@ public class CalculateMaxTTest {
     
     Farm aFarm;
     Herd aHerd;
-    Cow aCow;
+    Cow cow1;
+    Cow cow2;
     MilkYield milkYield;
     MilkTable milkTable;
     Collection<MilkTable> milkTables;
@@ -49,25 +50,32 @@ public class CalculateMaxTTest {
     public void setUp() {
         aFarm = new Farm("New Farm", "Waikato");
         aHerd = new Herd("NewHerd", EIGHT_16);
-        aCow = new Cow(aFarm, aHerd);
-        aHerd.addCow(aCow);
-        milkYield = aCow.getMilkYield();
+        // add cow1 to the test system
+        cow1 = new Cow(aFarm, aHerd);
+        aHerd.addCow(cow1);
+        milkYield = cow1.getMilkYield();
         milkYield.setYield(13, 7);
-        aCow.setValidMilkYield(true);
+        cow1.setValidMilkYield(true);
+        // add cow2 to the test system
+        cow2 = new Cow(aFarm, aHerd);
+        aHerd.addCow(cow2);
+        milkYield = cow2.getMilkYield();
+        milkYield.setYield(14, 8);
+        cow2.setValidMilkYield(true);
         
         calcMaxT = new CalculateMaxT();
         milkTables = calcMaxT.getMilkTables();
+        // selects the MilkTable referenced by the MilkInterval.EIGHT_16
         milkTables.stream().filter((mt) -> (mt.getMilkInterval().equals(EIGHT_16))).forEach((mt) -> {
             milkTable = mt;
         });
-        setMilkTable();
-        
+        setMilkTable();  
     }
     
     private void setMilkTable()
     {
-        int daily = 20;
-        int am = 13;
+        int daily = 21;
+        int am = 14;
         int pm = 7;
         milkTable.populateRow(daily, am, pm);
     }
@@ -96,7 +104,7 @@ public class CalculateMaxTTest {
     public void testHerdMilkAverage() {
         System.out.println("herdMilkAverage");
         CalculateMaxT instance = new CalculateMaxT();
-        int expResult = 20;
+        int expResult = 21;
         int result = instance.herdMilkAverage(aHerd);
         assertEquals(expResult, result);
     }
@@ -108,7 +116,7 @@ public class CalculateMaxTTest {
     public void testAmMaxTTime() {
         System.out.println("amMaxTTime");
         CalculateMaxT instance = calcMaxT;
-        String expResult = "07:32";
+        String expResult = "07:57";
         String result = instance.amMaxTTime(aHerd);
         assertEquals(expResult, result);
     }
