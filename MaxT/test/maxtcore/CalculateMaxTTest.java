@@ -55,13 +55,11 @@ public class CalculateMaxTTest {
         aHerd.addCow(cow1);
         milkYield = cow1.getMilkYield();
         milkYield.setYield(13, 7);
-        cow1.setValidMilkYield(true);
         // add cow2 to the test system
         cow2 = new Cow(aFarm, aHerd);
         aHerd.addCow(cow2);
         milkYield = cow2.getMilkYield();
         milkYield.setYield(14, 8);
-        cow2.setValidMilkYield(true);
         
         calcMaxT = new CalculateMaxT();
         milkTables = calcMaxT.getMilkTables();
