@@ -121,15 +121,16 @@ public class MaxTCoord {
         try
         {
             // validates the Farm name is not blank
-            if (name.trim().isEmpty() || !name.trim().matches("[a-zA-Z0-9 ]"))
+            if (name.trim().isEmpty() || name.trim().matches("[a-zA-Z0-9 ]"))
             {
                 AddErrors("Farm not saved, Farm name is empty");
                 return false;
             }
             // validates the location is not blank
-            if (location.trim().isEmpty() || !location.trim().matches("[a-zA-Z0-9 ]"))
+            if (location.trim().isEmpty() || location.trim().matches("[a-zA-Z0-9 ]"))
             {
                 AddErrors("Farm not saved, Farm location is empty");
+                return false;
             }
             // validation for equal farm names in the system
             for (Farm checkFarm: farms)
@@ -247,6 +248,12 @@ public class MaxTCoord {
             MilkYield milkYield = aCow.getMilkYield();
             milkYield.setYield(am, pm);
             return true;
+        }
+        catch (NullPointerException e)
+        {
+            aCow.setMilkYield(new MilkYield(am, pm, aCow));
+            AddErrors("The cow had no milk yield object but a new one has been created");
+            return false;
         }
         catch (Exception e)
         {

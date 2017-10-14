@@ -58,12 +58,12 @@ public class Cow implements Comparable<Cow>{
     }
     
     /**
-     * Returns the state of hasValidMilkYield
-     * @return true || false
+     * Setter for a MilkYield object to be associated with a Cow object
+     * @param milkYield A milk yield object
      */
-    public boolean hasValidMilkYield()
+    public void setMilkYield(MilkYield milkYield)
     {
-        return this.hasValidMilkYield;
+        this.milkYield = milkYield;
     }
     
     /**
@@ -75,6 +75,15 @@ public class Cow implements Comparable<Cow>{
         setValidMilkYield(false);
     }
     
+    /**
+     * Returns the state of hasValidMilkYield
+     * @return true || false
+     */
+    public boolean hasValidMilkYield()
+    {
+        return this.hasValidMilkYield;
+    }
+       
     /**
      * Flags the Cow object as having or having not a valid MilkYield object
      * @param b a boolean value either true || false

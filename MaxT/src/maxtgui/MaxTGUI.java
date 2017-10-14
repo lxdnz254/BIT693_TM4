@@ -435,9 +435,18 @@ public class MaxTGUI extends javax.swing.JFrame {
     
     private void deleteMilkTaking() 
     {
-        systemInfoTextArea.setText("System Information: The milk taking for the cow has been deleted from the system.");
-        displayHerdStatistics();
-        addMilkTaking();
+        Cow theCow = cows.get(selectCowList.getSelectedIndex());
+        if (maxTCoord.deleteAMilkYield(theCow))
+        {
+            systemInfoTextArea.setText("System Information: The milk taking for the cow has been deleted from the system.");
+            displayHerdStatistics();
+            addMilkTaking();
+        }
+        else
+        {
+            systemInfoTextArea.setText("System Information: " + maxTCoord.GetLastError());
+        }
+        
     }
     
     private void resetMilkTaking() 
